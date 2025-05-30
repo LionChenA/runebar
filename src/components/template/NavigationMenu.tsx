@@ -16,18 +16,18 @@ export default function NavigationMenu() {
     <NavigationMenuBase className="px-2 font-mono text-muted-foreground">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link to="/">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild>
+            <Link to="/" className={navigationMenuTriggerStyle()}>
               {t("titleHomePage")}
-            </NavigationMenuLink>
-          </Link>
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link to="/second-page">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild>
+            <Link to="/second-page" className={navigationMenuTriggerStyle()}>
               {t("titleSecondPage")}
-            </NavigationMenuLink>
-          </Link>
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenuBase>
