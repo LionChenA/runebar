@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+对于react17+的项目而言,在tsconfig中进行如下设置,可以避免重复的import React from 'react'语句。如不设置,在使用该语句在ts文件中仅提供JSX支持时,会导致 biome 提示 useImportType的错误。
+{
+"jsx": "react-jsx",
+"jsxImportSource": "react",
+}

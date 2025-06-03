@@ -1,0 +1,109 @@
+---
+description: 
+globs: src/**/*.ts,src/**/*.tsx
+alwaysApply: false
+---
+Maintains a structured, human-readable `.md` file for each source code file. Includes module summary, developer notes, and explanation of core functionality without directly including code implementations.
+
+# 1. Project Analysis and Global Dependencies
+
+## Initial Project Analysis
+- Analyze project configuration files (package.json, tsconfig.json, etc.)
+- Identify UI framework, styling approach, and key libraries from context.json
+- Determine common patterns and dependencies used across components
+
+## User Confirmation for Global Dependencies
+- Present findings to the user for confirmation
+- Ask which libraries and utilities should be considered "global" dependencies
+- Examples: styling libraries, component composition utilities, icon libraries
+
+## Global Documentation Creation
+Create and maintain `.cursor/project/source-logic/global.md` to document:
+
+- Core UI framework (React, Vue, etc.)
+- Styling approach (Tailwind CSS, styled-components, etc.)
+- Component composition utilities
+- Common patterns and conventions
+- Design system principles
+
+# 2. Target path mapping
+Let `FILE_PATH = src/components/Button.tsx`  
+→ Logical summary file lives at:  
+`.cursor/project/source-logic/files/src/components/Button.tsx.md`
+
+# 3. If .md file is missing → Generate
+
+## Section 1: Component Overview
+- Component name and path
+- Relationship to web standards or base components (e.g., "封装了 HTML button 元素")
+- Core functionality and purpose
+- Key features and capabilities
+
+## Section 2: Implementation Details
+- Relationship to web standards (HTML elements, ARIA roles)
+- Relationship to framework primitives (e.g., Radix UI components)
+- Component composition and dependencies
+- Variant system explanation (if applicable)
+- Focus on architectural decisions rather than specific code
+- DO NOT include direct code snippets from the implementation
+
+## Section 3: Usage Scenarios
+- Common use cases
+- Integration patterns
+- When to use this component vs alternatives
+
+## Section 4: Technical Considerations
+- Accessibility features
+- Performance considerations
+- Browser compatibility notes
+- Integration with the design system
+
+## Section 5: Developer Notes & TODOs
+- Extract all inline comments with:
+  - `// TODO:`
+  - `// FIXME:`
+  - `// NOTE:`
+- List them with line number and timestamp
+
+# 4. If .md already exists → Incrementally update
+
+## Diff detection
+- If only whitespace/comments changed → Skip component overview
+- Otherwise:
+  - Update core functionality description if component purpose changed
+  - Update implementation details if architecture changed
+  - Append new TODOs
+  - Update technical considerations if relevant
+
+# 5. Maintain file history
+- Preserve manually added design decisions
+- Don't overwrite unrelated sections
+
+# 6. Save result
+Write updated `.cursor/project/source-logic/files/<file>.md`
+
+## 1. File Metadata
+- File Path
+- Role in project (component, layout, utils, hook, etc.)
+- Layer (UI, domain, infrastructure)
+
+## 2. Key Contributions
+- What unique logic does this file introduce?
+- Which global utilities does it wrap/compose/customize?
+- Does it override or extend a pattern?
+
+## 3. Logical Structure
+- Named exports with purpose (not just names)
+- Design thoughts if observable from comments or code
+- List props / behaviors / internal state transitions
+
+## 4. Collaborations & Dependencies
+- Local relationships (uses X from Y, composes Z)
+- Global imports (reference only if not in global.md)
+
+## 5. Developer Intentions
+- Extract all TODO, FIXME, NOTE
+- Try to summarize "why this is implemented this way" if code comments or pattern suggest it
+
+> Use natural language, not overly strict sections.
+> Prioritize human-readable reasoning.

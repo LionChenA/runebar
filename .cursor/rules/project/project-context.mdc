@@ -1,0 +1,64 @@
+---
+description: Extracts and persists a summary of the project's technical environment (framework, tooling, configs) to   `.cursor/project/context.json`. Updates only if relevant config files change.
+globs: 
+alwaysApply: false
+---
+# 1. Parse the files and extract metadata
+
+## package.json
+- name, version, description
+-
+
+tsconfig.json
+- compilerOptions: `target`, `jsx`, `paths`, `baseUrl`
+
+## tsconfig.json
+- compilerOptions: `target`, `jsx`, `paths`, `baseUrl`
+
+## tailwind.config.js
+- darkMode, theme.extend (colors, spacing, breakpoints)
+
+## shadcn components.json
+- tailwind, aliases and iconLibrary
+
+## Framework detection
+- Detect from config presence: Next.js / Vite / Webpack
+
+## ..
+
+# 2. Write context
+Save as `.cursor/project/context.json` in format:
+
+```jsonc
+{
+  "name": "my-app",
+  "framework": "Next.js",
+  "tailwind": {
+    "darkMode": "media",
+    "extendColors": ["primary", "secondary"]
+  },
+  "deployment": {
+    "platform": "Vercel",
+    "envPlaceholders": ["DATABASE_URL", "API_KEY"]
+  },
+  ...
+}
+
+# 3. If config files are missing, prompt user and ask whether to generate one.
+
+# 4. Synchronization with other files
+When updating `.cursor/project/context.json`, also update the corresponding values in related configuration files:
+
+## Files to sync with context.json:
+- `package.json`: Update name, productName, version, description
+- `forge.config.ts`: Update packagerConfig.name, packagerConfig.productName
+- `index.html`: Update title tag if it matches the previous name/productName
+- Other files with project identifiers: README.md, license headers, etc.
+
+## Sync process:
+1. Identify which core properties were changed in context.json
+2. Find and update the same properties in related configuration files
+3. Ensure consistency across the entire project
+4. Notify user of all files that were updated
+
+

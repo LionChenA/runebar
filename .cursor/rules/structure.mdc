@@ -1,0 +1,12 @@
+---
+description: structure of the whole repo and usages of every parts 
+globs: 
+alwaysApply: false
+---
+the whole repo consists of three parts:
+- configs: configuration of tools 
+- src: source code
+- rules for LLM: spicific rules which LLMs should follow.
+  - project: everything about project
+  - personal: user's preferences and taste
+  - lib: store experiences
