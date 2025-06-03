@@ -1,0 +1,82 @@
+{
+  "name": "runebar",
+  "productName": "runebar",
+  "version": "1.0.0",
+  "description": "Harnessing LLM capabilities to enhance productivity and creativity",
+  "framework": "Electron",
+  "ui": {
+    "framework": "React",
+    "version": "19.1.0",
+    "components": "shadcn/ui",
+    "styling": "Tailwind CSS",
+    "tailwindVersion": "4.1.7",
+    "icons": "lucide-react",
+    "router": "TanStack Router",
+    "fonts": ["Geist", "Geist Mono", "Tomorrow"]
+  },
+  "bundler": "Vite",
+  "typescript": {
+    "version": "5.8.3",
+    "compilerOptions": {
+      "target": "ESNext",
+      "jsx": "react",
+      "paths": {
+        "@/*": ["./src/*"]
+      },
+      "baseUrl": "."
+    }
+  },
+  "tailwind": {
+    "darkMode": "class",
+    "cssVariables": true,
+    "baseColor": "slate",
+    "cssPath": "src/styles/global.css",
+    "animations": true
+  },
+  "testing": {
+    "unit": "Vitest",
+    "e2e": "Playwright",
+    "testingLibrary": "React Testing Library"
+  },
+  "linting": {
+    "tool": "Biome",
+    "formatter": {
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "quoteStyle": "double",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
+    }
+  },
+  "packaging": {
+    "tool": "Electron Forge",
+    "makers": ["Squirrel", "ZIP", "RPM", "DEB"]
+  },
+  "i18n": {
+    "library": "i18next"
+  },
+  "structure": {
+    "src": {
+      "assets": "Fonts and other assets",
+      "components": {
+        "template": "Template components",
+        "ui": "shadcn/ui components"
+      },
+      "helpers": {
+        "ipc": "IPC related functions"
+      },
+      "layouts": "Layout components",
+      "localization": "i18n files",
+      "pages": "App pages",
+      "routes": "TanStack Router routes",
+      "styles": "Global styles",
+      "tests": {
+        "e2e": "Playwright tests",
+        "unit": "Vitest tests"
+      },
+      "types": "TypeScript type definitions",
+      "utils": "Utility functions"
+    }
+  }
+}

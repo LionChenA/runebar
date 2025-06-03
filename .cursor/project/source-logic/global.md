@@ -1,0 +1,104 @@
+# Global Dependencies and Patterns
+
+基于对项目的分析，以下是在整个代码库中共享的关键依赖和模式。
+
+## 核心框架和库
+
+### Electron
+- **用途**: 提供桌面应用程序的运行环境
+- **主要模块**: `app`, `BrowserWindow`, IPC 通信
+
+### React
+- **版本**: 19.1.0
+- **用途**: 用户界面构建
+- **核心功能**: 组件系统, Hooks, 虚拟 DOM
+
+### TanStack Router
+- **用途**: 应用程序路由管理
+- **主要组件**: `RouterProvider`, `router`
+
+### i18next
+- **用途**: 国际化和本地化
+- **主要功能**: 语言切换, 翻译管理
+
+## UI 组件库
+
+### shadcn/ui
+- **基础**: 基于 Radix UI 原语构建的组件库
+- **样式**: 使用 Tailwind CSS 进行样式设计
+
+### Radix UI
+- **用途**: 提供无障碍、无样式的 UI 原语
+- **主要组件**:
+  - `Slot`: 用于组件组合 (`asChild` 模式)
+  - `Toggle`: 切换组件
+  - `NavigationMenu`: 导航菜单组件
+
+## 样式工具
+
+### Tailwind CSS
+- **版本**: 4.1.7
+- **用途**: 实用优先的 CSS 框架
+- **主要功能**: 预定义的工具类, 响应式设计, 主题定制
+
+### 样式工具函数
+- **cn** (`@/utils/tailwind`): 用于条件性地合并类名
+- **cva** (`class-variance-authority`): 用于管理组件变体和样式
+
+## 图标库
+
+### Lucide React
+- **用途**: 提供一致的图标集
+- **使用**: 用于 UI 元素如箭头、指示器和操作按钮
+
+## 项目特定模式
+
+### IPC 通信系统
+- **架构**: 模块化设计，分为中央协调器和功能模块
+- **中央协调器**:
+  - `helpers/ipc/context-exposer.ts`: 在预加载脚本中集中暴露所有上下文
+  - `helpers/ipc/listeners-register.ts`: 在主进程中集中注册所有事件监听器
+- **功能模块结构**:
+  - `{module}-channels.ts`: 定义 IPC 通道常量
+  - `{module}-context.ts`: 暴露渲染进程可访问的 API
+  - `{module}-listeners.ts`: 在主进程中处理渲染进程的请求
+- **数据流**:
+  1. 渲染进程通过 `window.{namespace}.{method}()` 调用暴露的 API
+  2. 预加载脚本将调用转换为对特定 IPC 通道的 `ipcRenderer.invoke()` 调用
+  3. 主进程中的监听器接收请求，执行相应操作
+  4. 主进程返回结果，通过 Promise 传递回渲染进程
+- **安全考虑**:
+  - 上下文隔离: 使用 contextBridge 安全地暴露 API
+  - 有限的 API: 只暴露必要的功能，限制渲染进程的权限
+  - 类型安全: 使用 TypeScript 确保类型安全
+  - 异步通信: 使用 Promise 进行异步通信，避免阻塞
+- **现有模块**:
+  - 主题管理模块: 控制应用程序主题
+  - 窗口控制模块: 控制应用程序窗口
+
+### 主题管理
+- **模式**: 系统/深色/浅色主题切换
+- **文件**: `helpers/theme_helpers.ts`
+- **IPC 集成**: 通过 `helpers/ipc/theme` 目录下的文件与主进程通信
+
+### 窗口控制
+- **模式**: 最小化/最大化/关闭窗口操作
+- **文件**: `helpers/window_helpers.ts`
+- **IPC 集成**: 通过 `helpers/ipc/window` 目录下的文件与主进程通信
+
+### 组件结构
+1. **变体定义**: 使用 `cva` 定义样式变体
+2. **组件接口**: TypeScript 接口扩展 HTML 元素属性和变体属性
+3. **组件实现**: 使用 `React.forwardRef` 进行引用转发
+4. **组合模式**: 使用 `asChild` 属性和 Radix UI 的 `Slot` 实现组件组合
+
+### 无障碍性特性
+- 键盘导航
+- ARIA 属性
+- 屏幕阅读器支持
+- 焦点管理
+
+### 样式方法
+- Tailwind CSS 用于实用优先的样式
+- CSS 变量用于主题化
+- 使用数据属性的状态样式 
