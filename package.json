@@ -1,8 +1,8 @@
 {
-  "name": "electron-shadcn",
-  "productName": "electron-shadcn Template",
+  "name": "runebar",
+  "productName": "runebar",
   "version": "1.0.0",
-  "description": "Electron Forge with shadcn-ui (Vite + Typescript)",
+  "description": "Harnessing LLM capabilities to enhance productivity and creativity",
   "main": ".vite/build/main.js",
   "private": true,
   "scripts": {
