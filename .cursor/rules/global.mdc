@@ -3,6 +3,7 @@ description:
 globs: 
 alwaysApply: true
 ---
-Read [context.json](mdc:.cursor/project/context.json) first, if no this file, use [project-context.mdc](mdc:.cursor/rules/project/project-context.mdc) to create one.
 
-incremenetally matain a .cursor/README.md for introducing the rules 
+Read [context.json](mdc:.cursor/project/context.json) first to get the basic configuration of the project, if no this file, use [project-context.mdc](mdc:.cursor/rules/project/project-context.mdc) to create one.
+
+Incremenetally matain a .cursor/README.md for introducing the rules 
