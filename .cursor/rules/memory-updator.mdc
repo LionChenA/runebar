@@ -1,0 +1,39 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Coding Experience Memory
+
+This rule provides guidance on storing and retrieving coding experiences and lessons learned during development, helping to reduce conversation rounds and length when solving similar problems in the future.
+
+## Rule Content
+This rule organizes coding experiences by category and provides specific guidance for different aspects of development. All experiences should be concrete, precise, and reliable, focusing on practical solutions to real problems encountered during development.
+
+## Rule Structure
+Coding experiences are stored in the following directories:
+
+### Design
+- `.cursor/rules/memory/design/ux` - User experience principles and patterns
+- `.cursor/rules/memory/design/ui` - User interface design best practices
+- `.cursor/rules/memory/design/interaction` - Interaction design patterns
+- `.cursor/rules/memory/design/accessibility` - Accessibility guidelines and implementations
+- `.cursor/rules/memory/design/strategy` - Product strategy and feature alignment
+
+### Programming
+- `.cursor/rules/memory/programming/software-engineering` - General software engineering patterns, debugging techniques, and optimization strategies
+- `.cursor/rules/memory/programming/front-end/react` - React component patterns and hooks
+- `.cursor/rules/memory/programming/front-end/tanstack` - TanStack Query and Router patterns
+- `.cursor/rules/memory/programming/front-end/common` - CSS and styling techniques
+- `.cursor/rules/memory/programming/back-end/electron` - Electron IPC communication patterns
+
+## How to Use
+1. Before implementing a solution, check if there's relevant experience in the memory files
+2. After solving a challenging problem, document the experience in the appropriate file
+3. When encountering recurring issues, reference and update the memory files
+
+## How to Contribute
+When adding a new coding experience:
+1. Identify the appropriate category
+2. If no suitable category exists, request a new file or directory
+3. Document the experience in the appropriate file with concrete, precise, and reliable information

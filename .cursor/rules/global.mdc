@@ -3,3 +3,6 @@ description:
 globs: 
 alwaysApply: true
 ---
+Read [context.json](mdc:.cursor/project/context.json) first, if no this file, use [project-context.mdc](mdc:.cursor/rules/project/project-context.mdc) to create one.
+
+incremenetally matain a .cursor/README.md for introducing the rules 

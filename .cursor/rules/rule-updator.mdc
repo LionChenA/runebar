@@ -1,5 +1,67 @@
 ---
-description:
-globs:
+description: 
+globs: .mdc
 alwaysApply: false
 ---
+# Rule Update Guidelines
+
+Change rules CAUTIOUSLY. This document provides guidance on how to properly update and manage rule files in the Cursor environment.
+
+## MDC File Format
+
+Rules in Cursor use the MDC (Markdown with Configuration) format. Each rule file should have a `.mdc` extension and MUST include YAML frontmatter with the following structure:
+
+### Rule Types
+
+| Rule Type       | Description                                                                                  |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| Always          | Always included in the model context                                                         |
+| Auto Attached   | Included when files matching a glob pattern are referenced                                   |
+| Agent Requested | Rule is available to the AI, which decides whether to include it. Must provide a description |
+| Manual          | Only included when explicitly mentioned using @ruleName                                      |
+
+### MDC Structure
+
+A typical MDC file should have the following structure:
+
+```
+---
+description: Brief description of what the rule does (required for Agent Requested rules)
+globs: [optional glob patterns for Auto Attached rules]
+alwaysApply: [true/false]
+type: [always/autoAttached/agentRequested/manual]
+---
+
+# Rule Title
+
+Rule content goes here...
+```
+
+## Editing MDC Files
+
+Due to technical limitations, LLMs cannot directly modify the YAML frontmatter of MDC files. When working with MDC files:
+
+1. **Content Editing**: LLMs can edit the Markdown content portion of MDC files
+2. **YAML Frontmatter**: Users must manually add or modify the YAML frontmatter
+3. **Process for Updates**:
+   - LLM will provide the suggested YAML frontmatter for users to manually add
+   - LLM can edit the content portion of the file
+   - User must manually combine both parts
+
+## Best Practices
+
+1. **Keep rules concise** - Under 500 lines is a good target
+2. **Split large concepts** into multiple, composable rules
+3. **Provide concrete examples** or referenced files when helpful
+4. **Avoid vague guidance** - Write rules the way you would write a clear internal doc
+5. **Use specific rule types appropriately**:
+   - Use `Always` for critical rules that must always apply
+   - Use `Auto Attached` for rules that should apply to specific file types
+   - Use `Agent Requested` for rules that the AI might need based on context
+   - Use `Manual` for rules that should only be used when explicitly referenced
+
+## Memory Rules
+
+All rules in the `@memory` directory should be set as `Agent Requested` type with clear descriptions that specify when they should be triggered. These rules should contain concrete, precise, and reliable information based on actual experiences and solutions.
+
+Memory rules should only be modified when explicitly requested by the user, as they represent accumulated knowledge and best practices.

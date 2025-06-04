@@ -7,7 +7,6 @@ alwaysApply: false
 
 ## package.json
 - name, version, description
--
 
 tsconfig.json
 - compilerOptions: `target`, `jsx`, `paths`, `baseUrl`
