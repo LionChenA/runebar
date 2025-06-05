@@ -1,7 +1,8 @@
 import path from "node:path"
 import { createLogger } from "@/utils/logger"
 import { BrowserWindow, app, screen } from "electron"
-import { RUNEBAR_WINDOW_CONFIG, WindowType, getWindowHtmlFilename } from "./window-config"
+import { RUNEBAR_WINDOW_CONFIG, getWindowHtmlFilename } from "./config"
+import { WindowType } from "./types"
 
 // 声明在全局环境下可用的变量，由Electron Forge注入
 declare const RUNEBAR_WINDOW_VITE_DEV_SERVER_URL: string | undefined
@@ -16,7 +17,7 @@ export class RunebarWindowManager {
   private runebarWindow: BrowserWindow | null = null
   private mainWindow: BrowserWindow | null = null
   private inDevelopment: boolean
-  private readonly MEMORY_SAVE_DELAY = RUNEBAR_WINDOW_CONFIG.MEMORY_SAVE_DELAY
+  private readonly MEMORY_SAVE_DELAY = RUNEBAR_WINDOW_CONFIG.memorySaveDelay
   private memorySaveTimer: NodeJS.Timeout | null = null
   private logger = createLogger("RunebarWindowManager")
 
@@ -78,14 +79,14 @@ export class RunebarWindowManager {
 
     // 窗口配置
     this.runebarWindow = new BrowserWindow({
-      width: RUNEBAR_WINDOW_CONFIG.WIDTH,
-      height: RUNEBAR_WINDOW_CONFIG.HEIGHT,
+      width: RUNEBAR_WINDOW_CONFIG.width,
+      height: RUNEBAR_WINDOW_CONFIG.height,
       show: false,
       frame: false,
       resizable: false,
       movable: true,
       transparent: true,
-      backgroundColor: RUNEBAR_WINDOW_CONFIG.TRANSPARENT_BG,
+      backgroundColor: RUNEBAR_WINDOW_CONFIG.transparentBg,
       opacity: 1.0, // 完全不透明
       alwaysOnTop: true,
       skipTaskbar: true,
@@ -102,8 +103,8 @@ export class RunebarWindowManager {
 
     // 窗口定位 - 居中
     this.runebarWindow.setPosition(
-      Math.floor(screenWidth / 2 - RUNEBAR_WINDOW_CONFIG.WIDTH / 2),
-      RUNEBAR_WINDOW_CONFIG.POSITION_Y,
+      Math.floor(screenWidth / 2 - RUNEBAR_WINDOW_CONFIG.width / 2),
+      RUNEBAR_WINDOW_CONFIG.position?.y || 100,
     )
 
     // 加载窗口内容

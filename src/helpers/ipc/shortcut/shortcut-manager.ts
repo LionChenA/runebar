@@ -1,6 +1,6 @@
+import { RunebarWindowManager } from "@/helpers/windows/runebar_manager"
 import { app, globalShortcut } from "electron"
 import type { BrowserWindow } from "electron"
-import { RunebarWindowManager } from "../window/runebar-window-manager"
 import {
   GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL,
   GLOBAL_SHORTCUT_RUNEBAR_TOGGLE_CHANNEL,

@@ -5,7 +5,7 @@ import { BrowserWindow, app } from "electron"
 import { REACT_DEVELOPER_TOOLS, installExtension } from "electron-devtools-installer"
 import registerListeners from "./helpers/ipc/listeners-register"
 import { ShortcutManager } from "./helpers/ipc/shortcut/shortcut-manager"
-import { RunebarWindowManager } from "./helpers/ipc/window/runebar-window-manager"
+import { RunebarWindowManager } from "./helpers/windows/runebar_manager"
 
 // 声明在全局环境下可用的变量，由Electron Forge注入
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string | undefined

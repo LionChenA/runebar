@@ -1,5 +1,5 @@
+import { RunebarWindowManager } from "@/helpers/windows/runebar_manager"
 import { type BrowserWindow, ipcMain } from "electron"
-import { RunebarWindowManager } from "./runebar-window-manager"
 import {
   WIN_CLOSE_CHANNEL,
   WIN_MAXIMIZE_CHANNEL,
