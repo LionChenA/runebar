@@ -4,6 +4,7 @@ import path from "node:path"
 import { BrowserWindow, app } from "electron"
 import { REACT_DEVELOPER_TOOLS, installExtension } from "electron-devtools-installer"
 import registerListeners from "./helpers/ipc/listeners-register"
+import { ShortcutManager } from "./helpers/ipc/shortcut/shortcut-manager"
 
 const inDevelopment = process.env.NODE_ENV === "development"
 
@@ -23,6 +24,7 @@ function createWindow() {
     titleBarStyle: "hidden",
   })
   registerListeners(mainWindow)
+  ShortcutManager.getInstance().init(mainWindow)
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)

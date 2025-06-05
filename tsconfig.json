@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "target": "ESNext",
     "module": "CommonJS",
     "lib": ["dom", "ESNext"],
@@ -13,6 +12,8 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -21,7 +22,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "jsx": "react-jsx",
-  "jsxImportSource": "react",
+
   "include": ["src/**/*", "./package.json", "./forge.config.ts"]
 }
