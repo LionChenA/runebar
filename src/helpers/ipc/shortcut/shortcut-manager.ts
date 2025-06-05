@@ -1,6 +1,7 @@
 import { app, globalShortcut } from "electron"
 import type { BrowserWindow } from "electron"
 import {
+  GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL,
   GLOBAL_SHORTCUT_SHOW_APP_CHANNEL,
   GLOBAL_SHORTCUT_TOGGLE_WINDOW_CHANNEL,
   SHORTCUT_EVENT_CHANNEL,
@@ -44,6 +45,13 @@ class ShortcutManager {
       this.mainWindow?.show()
       this.mainWindow?.focus()
       this.sendShortcutEvent(GLOBAL_SHORTCUT_SHOW_APP_CHANNEL)
+    })
+
+    // 打开命令菜单
+    this.register("CommandOrControl+K", () => {
+      this.mainWindow?.show()
+      this.mainWindow?.focus()
+      this.sendShortcutEvent(GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL)
     })
   }
 

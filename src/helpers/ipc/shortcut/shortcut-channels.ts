@@ -4,6 +4,7 @@
  */
 export const GLOBAL_SHORTCUT_TOGGLE_WINDOW_CHANNEL = "global-shortcut:toggle-window"
 export const GLOBAL_SHORTCUT_SHOW_APP_CHANNEL = "global-shortcut:show-app"
+export const GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL = "global-shortcut:command-menu"
 
 /**
  * Main channel for all shortcut events sent from main to renderer process

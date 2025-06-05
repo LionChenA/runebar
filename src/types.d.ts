@@ -18,7 +18,13 @@ interface ElectronWindow {
   close: () => Promise<void>
 }
 
-declare interface Window {
-  themeMode: ThemeModeContext
-  electronWindow: ElectronWindow
+// 全局Window接口扩展
+declare global {
+  interface Window {
+    themeMode: ThemeModeContext
+    electronWindow: ElectronWindow
+  }
 }
+
+// 确保这个文件被视为一个模块
+export {}
