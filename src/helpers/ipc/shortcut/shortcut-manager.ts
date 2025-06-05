@@ -1,7 +1,9 @@
 import { app, globalShortcut } from "electron"
 import type { BrowserWindow } from "electron"
+import { RunebarWindowManager } from "../window/runebar-window-manager"
 import {
   GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL,
+  GLOBAL_SHORTCUT_RUNEBAR_TOGGLE_CHANNEL,
   GLOBAL_SHORTCUT_SHOW_APP_CHANNEL,
   GLOBAL_SHORTCUT_TOGGLE_WINDOW_CHANNEL,
   SHORTCUT_EVENT_CHANNEL,
@@ -52,6 +54,13 @@ class ShortcutManager {
       this.mainWindow?.show()
       this.mainWindow?.focus()
       this.sendShortcutEvent(GLOBAL_SHORTCUT_COMMAND_MENU_CHANNEL)
+    })
+
+    // 控制Runebar窗口
+    this.register("Alt+Space", () => {
+      const runebarManager = RunebarWindowManager.getInstance(this.mainWindow!)
+      runebarManager.toggleWindow()
+      this.sendShortcutEvent(GLOBAL_SHORTCUT_RUNEBAR_TOGGLE_CHANNEL)
     })
   }
 
