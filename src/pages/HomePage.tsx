@@ -2,6 +2,8 @@ import LangToggle from "@/components/LangToggle"
 import ToggleTheme from "@/components/ToggleTheme"
 import Footer from "@/components/template/Footer"
 import InitialIcons from "@/components/template/InitialIcons"
+import { Button } from "@/components/ui/button"
+import { toggleRunebarWindow } from "@/helpers/window_helpers"
 import { useGlobalShortcut, useHotkeys } from "@/hooks/useHotkeys"
 import React, { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -14,9 +16,15 @@ export default function HomePage() {
   useHotkeys(
     {
       // Toggle theme with "Ctrl+D"
-      "ctrl+d": () => {
+      "ctrl+d": async () => {
         console.log("快捷键触发: 切换主题 (Ctrl+D)")
-        window.themeMode?.toggle()
+        // 获取当前主题并切换
+        const currentTheme = await window.themeMode.current()
+        if (currentTheme === "dark") {
+          await window.themeMode.light()
+        } else {
+          await window.themeMode.dark()
+        }
         setShortcutMessage(t("shortcutMessages.toggleTheme"))
       },
 
@@ -54,6 +62,17 @@ export default function HomePage() {
     }, 3000)
   })
 
+  // 处理Runebar窗口切换
+  const handleRunebarToggle = async () => {
+    await toggleRunebarWindow()
+    setShortcutMessage("Toggled Runebar window")
+
+    // Auto-clear message after 3 seconds
+    setTimeout(() => {
+      setShortcutMessage("")
+    }, 3000)
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-1 flex-col items-center justify-center gap-2">
@@ -76,11 +95,17 @@ export default function HomePage() {
             <li>{t("shortcutHelp.toggleTheme", { key: "Ctrl+D" })}</li>
             <li>{t("shortcutHelp.toggleLanguage", { key: "Ctrl+L" })}</li>
             <li>{t("shortcutHelp.globalToggleApp", { key: "Ctrl+Shift+Space" })}</li>
+            <li>Open Runebar with Alt+Space</li>
           </ul>
         </div>
 
-        <LangToggle />
-        <ToggleTheme />
+        <div className="flex gap-2">
+          <LangToggle />
+          <ToggleTheme />
+          <Button variant="outline" onClick={handleRunebarToggle}>
+            Toggle Runebar
+          </Button>
+        </div>
       </div>
       <Footer />
     </div>

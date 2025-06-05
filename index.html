@@ -1,13 +1,13 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <title>runebar</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self';" />
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <title>Runebar</title>
   </head>
-  <body>
-    <div id="app" />
-    <script type="module" src="/src/renderer.ts"></script>
+  <body class="bg-transparent">
+    <div id="root"></div>
+    <script type="module" src="/src/renderer.tsx"></script>
   </body>
-</html>
+</html> 
