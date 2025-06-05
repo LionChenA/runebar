@@ -101,4 +101,73 @@
 ### 样式方法
 - Tailwind CSS 用于实用优先的样式
 - CSS 变量用于主题化
-- 使用数据属性的状态样式 
+- 使用数据属性的状态样式
+
+## 快捷键管理系统
+
+### 工具与辅助函数
+
+项目的快捷键系统通过以下组件提供支持：
+
+1. **平台检测 (`utils/platform.ts`)**:
+   - 提供跨平台兼容的平台检测功能
+   - 支持针对特定平台的条件逻辑
+
+2. **快捷键辅助函数 (`helpers/hotkey_helpers.ts`)**:
+   - 标准化快捷键格式
+   - 转换不同系统的快捷键表示
+   - 格式化用于UI显示的快捷键
+   - 检测快捷键冲突
+
+3. **主进程快捷键管理 (`ShortcutManager`)**:
+   - 使用OOP单例模式管理全局快捷键
+   - 自动化生命周期管理
+
+4. **渲染进程快捷键钩子 (`useHotkeys`)**:
+   - 基于React Hooks的局部快捷键管理
+   - 组件级别的快捷键处理
+
+### 架构分层
+
+快捷键系统采用清晰的分层架构：
+
+- **基础层**: 平台检测和通用工具函数
+- **中间层**: 快捷键辅助函数和格式处理
+- **应用层**: 主进程管理类和渲染进程钩子
+- **UI层**: 组件中的快捷键绑定和显示
+
+这种分层确保了系统的模块化和可扩展性，同时保持了跨平台的一致性。
+
+### 重构升级
+
+项目的全局快捷键管理系统已从函数式编程模式升级为OOP单例模式：
+
+- **过去:** 使用函数式API (`registerGlobalShortcuts`/`unregisterGlobalShortcuts`)，需要显式注册和注销
+- **现在:** 使用单例模式的`ShortcutManager`类，提供自动化的生命周期管理
+- **优势:** 集中管理、自动化生命周期、降低耦合度、更好的扩展性
+
+### 关键设计模式
+
+- **单例模式:** `ShortcutManager`类通过`getInstance()`确保全局唯一实例
+- **封装:** 将快捷键的注册、注销和事件分发逻辑完全封装在管理器内部
+- **自动生命周期管理:** 在应用退出时自动注销快捷键，无需显式调用
+
+### 使用方式
+
+```typescript
+// 初始化
+ShortcutManager.getInstance().init(mainWindow);
+
+// 注册新快捷键
+ShortcutManager.getInstance().register("CommandOrControl+Shift+X", callback);
+
+// 注销快捷键
+ShortcutManager.getInstance().unregister("CommandOrControl+Shift+X");
+```
+
+### 集成流程
+
+1. 在应用启动时初始化管理器
+2. 无需显式管理快捷键的注销过程
+3. 渲染进程通过预先暴露的`electronShortcut.onShortcut`API监听快捷键事件
+
