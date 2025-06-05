@@ -34,6 +34,10 @@ const config: ForgeConfig = {
           name: "main_window",
           config: "vite.renderer.config.mts",
         },
+        {
+          name: "runebar_window",
+          config: "vite.renderer.config.mts",
+        },
       ],
     }),
 
