@@ -2,9 +2,11 @@ import { RouterProvider } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { runebarRouter } from "./routes/runebar/router"
 import "./localization/i18n"
+import type { ThemeMode } from "./helpers/theme"
+import { subscribeToThemeChanges } from "./helpers/theme_helpers"
 
 export function RunebarApp() {
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("dark")
+  const [theme, setTheme] = useState<ThemeMode>("dark")
   const [routerReady, setRouterReady] = useState(false)
   const [routerError, setRouterError] = useState<string | null>(null)
 
@@ -12,14 +14,23 @@ export function RunebarApp() {
   useEffect(() => {
     const initTheme = async () => {
       try {
-        const currentTheme = await window.themeMode.current()
-        setTheme(currentTheme)
+        const themePrefs = await window.themeMode.current()
+        setTheme(themePrefs.local || themePrefs.system)
       } catch (error) {
         console.error("Failed to get theme:", error)
       }
     }
 
     initTheme()
+
+    // 监听主题变化
+    const unsubscribe = subscribeToThemeChanges((event) => {
+      setTheme(event.themeMode)
+    })
+
+    return () => {
+      unsubscribe()
+    }
   }, [])
 
   // 初始化路由器

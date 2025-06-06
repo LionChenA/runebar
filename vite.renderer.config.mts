@@ -2,6 +2,7 @@ import path from "node:path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
+import { builtinModules } from "node:module"
 
 export default defineConfig({
   plugins: [
@@ -25,6 +26,7 @@ export default defineConfig({
         main: path.resolve(__dirname, "index.html"),
         runebar: path.resolve(__dirname, "runebar.html"),
       },
+      external: ["electron", ...builtinModules],
     },
   },
   resolve: {

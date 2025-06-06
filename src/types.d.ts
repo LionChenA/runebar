@@ -3,40 +3,35 @@
  * 集中管理整个应用的全局类型和声明
  */
 
-// ShortcutEvent类型定义
-interface ShortcutEvent {
-  type: string
-  timestamp: number
-  data?: unknown
+import type { ShortcutContext } from "./helpers/ipc/shortcut/shortcut-context"
+import type { ThemeChangeEvent, ThemePreferences } from "./helpers/theme"
+
+// 全局Window接口扩展
+declare global {
+  interface Window {
+    // 预加载脚本中暴露的API
+    themeMode: ThemeModeContext
+    electronWindow: WindowContext
+    shortcut: ShortcutContext
+  }
 }
 
-// 窗口控制接口
-interface ElectronWindow {
+// 主题模式上下文
+interface ThemeModeContext {
+  current: () => Promise<ThemePreferences>
+  toggle: () => Promise<boolean>
+  dark: () => Promise<boolean>
+  light: () => Promise<boolean>
+  system: () => Promise<boolean>
+  onThemeChange: (callback: (event: ThemeChangeEvent) => void) => () => void
+}
+
+// 窗口上下文
+interface WindowContext {
   minimize: () => Promise<void>
   maximize: () => Promise<void>
   close: () => Promise<void>
   toggleRunebar: () => Promise<void>
 }
 
-// 主题模式上下文
-interface ThemeModeContext {
-  toggle: () => Promise<boolean>
-  dark: () => Promise<void>
-  light: () => Promise<void>
-  system: () => Promise<boolean>
-  current: () => Promise<"dark" | "light" | "system">
-}
-
-// 全局Window接口扩展
-declare global {
-  interface Window {
-    themeMode: ThemeModeContext
-    electronWindow: ElectronWindow
-    electronShortcut?: {
-      onShortcut: (handler: (event: ShortcutEvent) => void) => () => void
-    }
-  }
-}
-
 // 确保这个文件被视为一个模块
-export {}

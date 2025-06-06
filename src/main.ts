@@ -5,6 +5,7 @@ import { BrowserWindow, app } from "electron"
 import { REACT_DEVELOPER_TOOLS, installExtension } from "electron-devtools-installer"
 import registerListeners from "./helpers/ipc/listeners-register"
 import { ShortcutManager } from "./helpers/ipc/shortcut/shortcut-manager"
+import { ThemeManager } from "./helpers/theme/theme_manager"
 import { RunebarWindowManager } from "./helpers/windows/runebar_manager"
 
 // 声明在全局环境下可用的变量，由Electron Forge注入
@@ -28,7 +29,12 @@ function createWindow() {
     titleBarStyle: "hidden",
   })
   registerListeners(mainWindow)
+
+  // 初始化快捷键管理器
   ShortcutManager.getInstance().init(mainWindow)
+
+  // 初始化主题管理器
+  ThemeManager.getInstance().init(mainWindow)
 
   // 初始化RunebarWindowManager
   const runebarManager = RunebarWindowManager.getInstance(mainWindow)

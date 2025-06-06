@@ -1,64 +1,76 @@
-import type { ThemeMode } from "@/types/theme-mode"
+import {
+  DARK_CLASS_NAME,
+  THEME_STORAGE_KEY,
+  type ThemeChangeEvent,
+  type ThemeMode,
+  type ThemePreferences,
+} from "./theme"
 
-const THEME_KEY = "theme"
-
-export interface ThemePreferences {
-  system: ThemeMode
-  local: ThemeMode | null
-}
-
-export async function getCurrentTheme(): Promise<ThemePreferences> {
-  const currentTheme = await window.themeMode.current()
-  const localTheme = localStorage.getItem(THEME_KEY) as ThemeMode | null
-
-  return {
-    system: currentTheme,
-    local: localTheme,
-  }
+export async function getCurrentTheme(): Promise<ThemeMode> {
+  const themePrefs = await window.themeMode.current()
+  return themePrefs.local || themePrefs.system
 }
 
 export async function setTheme(newTheme: ThemeMode) {
   switch (newTheme) {
     case "dark":
       await window.themeMode.dark()
-      updateDocumentTheme(true)
       break
     case "light":
       await window.themeMode.light()
-      updateDocumentTheme(false)
       break
-    case "system": {
-      const isDarkMode = await window.themeMode.system()
-      updateDocumentTheme(isDarkMode)
+    case "system":
+      await window.themeMode.system()
       break
-    }
   }
 
-  localStorage.setItem(THEME_KEY, newTheme)
+  localStorage.setItem(THEME_STORAGE_KEY, newTheme)
 }
 
 export async function toggleTheme() {
   const isDarkMode = await window.themeMode.toggle()
   const newTheme = isDarkMode ? "dark" : "light"
 
-  updateDocumentTheme(isDarkMode)
-  localStorage.setItem(THEME_KEY, newTheme)
+  localStorage.setItem(THEME_STORAGE_KEY, newTheme)
 }
 
 export async function syncThemeWithLocal() {
-  const { local } = await getCurrentTheme()
-  if (!local) {
-    setTheme("system")
-    return
-  }
+  const preferences = await window.themeMode.current()
+  const localTheme = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null
 
-  await setTheme(local)
+  if (localTheme) {
+    await setTheme(localTheme)
+  } else {
+    // 如果本地没有存储主题，则使用系统主题
+    await setTheme("system")
+    // 更新DOM以反映当前主题
+    updateDocumentTheme(preferences.isDark)
+  }
 }
 
-function updateDocumentTheme(isDarkMode: boolean) {
+/**
+ * 订阅主题变化事件
+ * @param callback 主题变化时的回调函数
+ * @returns 取消订阅的函数
+ */
+export function subscribeToThemeChanges(callback: (event: ThemeChangeEvent) => void) {
+  // 使用IPC渲染器注册主题变化事件
+  return window.themeMode.onThemeChange((event) => {
+    // 更新DOM
+    updateDocumentTheme(event.isDark)
+    // 调用回调
+    callback(event)
+  })
+}
+
+/**
+ * 更新文档的主题类
+ * @param isDarkMode 是否是暗色模式
+ */
+export function updateDocumentTheme(isDarkMode: boolean) {
   if (!isDarkMode) {
-    document.documentElement.classList.remove("dark")
+    document.documentElement.classList.remove(DARK_CLASS_NAME)
   } else {
-    document.documentElement.classList.add("dark")
+    document.documentElement.classList.add(DARK_CLASS_NAME)
   }
 }
