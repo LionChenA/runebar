@@ -29,6 +29,13 @@ export default function NavigationMenu() {
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/state-demo" className={navigationMenuTriggerStyle()}>
+              {t("titleStateDemoPage")}
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenuBase>
   )

@@ -1,12 +1,14 @@
-import "./styles/global.css"
-import React, { StrictMode } from "react"
+import React from "react"
 import { createRoot } from "react-dom/client"
 import App from "./App"
+import { AppProviders } from "./providers"
+import "./styles/global.css"
 
 // 渲染应用
-const root = createRoot(document.getElementById("root")!)
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <AppProviders>
+      <App />
+    </AppProviders>
+  </React.StrictMode>,
 )

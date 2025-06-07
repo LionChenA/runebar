@@ -9,6 +9,7 @@ i18n.use(initReactI18next).init({
         appName: "electron-shadcn",
         titleHomePage: "Home Page",
         titleSecondPage: "Second Page",
+        titleStateDemoPage: "State Demo",
         shortcutMessages: {
           toggleTheme: "Theme toggled",
           toggleLanguage: "Language changed",
@@ -28,6 +29,7 @@ i18n.use(initReactI18next).init({
         appName: "electron-shadcn",
         titleHomePage: "Página Inicial",
         titleSecondPage: "Segunda Página",
+        titleStateDemoPage: "Demo de Estado",
         shortcutMessages: {
           toggleTheme: "Tema alternado",
           toggleLanguage: "Idioma alterado",
@@ -47,6 +49,7 @@ i18n.use(initReactI18next).init({
         appName: "electron-shadcn",
         titleHomePage: "首页",
         titleSecondPage: "第二页",
+        titleStateDemoPage: "状态管理演示",
         shortcutMessages: {
           toggleTheme: "主题已切换",
           toggleLanguage: "语言已切换",
