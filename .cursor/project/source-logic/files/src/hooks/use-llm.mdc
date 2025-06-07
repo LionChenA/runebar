@@ -1,0 +1,120 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# useLlm Hook
+
+## 概述
+
+`use-llm.ts` 实现了与大语言模型(LLM)交互的核心逻辑，提供了一个React hook，封装了发送消息、管理对话历史和处理加载状态的功能。这个hook与数据store集成，使用存储的模型配置来进行API调用，并提供流畅的用户体验。
+
+## 实现细节
+
+hook定义了以下类型：
+
+### ChatMessage
+- **role**: 消息角色 ('user', 'assistant', 'system')
+- **content**: 消息内容
+
+### UseLlmOptions
+- **modelId**: 可选的模型ID (不提供时使用默认模型)
+- **systemPrompt**: 可选的系统提示
+
+hook提供以下功能：
+
+- **sendMessage**: 发送用户消息并获取AI响应
+- **messages**: 当前对话历史
+- **clearMessages**: 清除对话历史
+- **isLoading**: 加载状态
+- **error**: 错误状态
+
+## 技术注解
+
+- 使用TanStack Query的useMutation来管理异步操作
+- 与数据store集成，获取模型配置
+- 自动管理对话历史，包括添加用户和AI消息
+- 支持系统提示设置对话上下文
+- 返回加载和错误状态用于UI反馈
+
+## 设计思考
+
+1. **模型抽象**: 抽象LLM API调用，隐藏底层复杂性
+2. **状态管理**: 使用React状态管理对话历史
+3. **错误处理**: 提供错误状态便于UI显示错误信息
+4. **扩展性**: 设计允许未来扩展支持不同的LLM提供商
+
+## 与其他模块关系
+
+- 使用data.ts中的store获取模型配置
+- 被聊天界面和工具使用来与LLM交互
+- 模拟实现将在实际集成时替换为真实API调用
+
+## 使用示例
+
+```tsx
+// 简单聊天界面
+function ChatInterface() {
+  const [inputText, setInputText] = useState('')
+  
+  // 使用默认模型和系统提示
+  const { 
+    sendMessage, 
+    messages, 
+    clearMessages, 
+    isLoading 
+  } = useLlm({
+    systemPrompt: 'You are a helpful assistant.'
+  })
+  
+  const handleSend = async () => {
+    if (!inputText.trim() || isLoading) return
+    
+    try {
+      await sendMessage(inputText)
+      setInputText('')
+    } catch (err) {
+      console.error('Failed to send message:', err)
+    }
+  }
+  
+  return (
+    <div>
+      <div className="messages">
+        {messages.map((msg, index) => (
+          msg.role !== 'system' && (
+            <div key={`${msg.role}-${index}`} className={msg.role}>
+              {msg.content}
+            </div>
+          )
+        ))}
+        
+        {isLoading && <div className="loading">AI is thinking...</div>}
+      </div>
+      
+      <div className="input-area">
+        <input
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Type your message..."
+          disabled={isLoading}
+        />
+        <button onClick={handleSend} disabled={isLoading || !inputText.trim()}>
+          Send
+        </button>
+        <button onClick={clearMessages}>Clear Chat</button>
+      </div>
+    </div>
+  )
+}
+
+// 使用特定模型
+function ModelSpecificChat({ modelId }) {
+  const { sendMessage, messages } = useLlm({ 
+    modelId,
+    systemPrompt: 'Answer briefly and concisely.'
+  })
+  
+  // 组件实现...
+}
+``` 

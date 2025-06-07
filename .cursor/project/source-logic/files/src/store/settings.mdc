@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Settings Store
+
+## 概述
+
+`settings.ts` 实现了应用的用户设置管理，处理主题、语言和其他用户首选项。这个store使用Zustand创建全局设置状态，并通过持久化中间件保存到localStorage。store还与外部工具集成，如主题和本地化帮助函数，实现设置的实际应用。
+
+## 实现细节
+
+store包含以下核心状态：
+
+- **theme**: 应用主题模式 (light/dark/system)
+- **language**: 界面语言
+- **autoSave**: 自动保存开关
+
+并提供这些状态的修改方法：
+
+- **setTheme**: 设置主题并应用到DOM
+- **toggleTheme**: 在明暗主题间切换
+- **setLanguage**: 设置界面语言并应用
+- **setAutoSave**: 设置自动保存状态
+- **toggleAutoSave**: 切换自动保存开关
+- **initialize**: 初始化所有设置
+
+## 技术注解
+
+- 与helpers/theme集成用于主题管理
+- 与helpers/localization集成用于语言管理
+- 使用Zustand的persist中间件持久化所有设置
+- 初始化函数在应用启动时调用，确保设置被正确应用
+
+## 设计思考
+
+1. **配置分离**: 用户设置与UI状态和应用数据分离
+2. **集中管理**: 所有用户配置在一个store中集中管理
+3. **即时应用**: 设置更改时立即应用并保存
+4. **与DOM集成**: 直接操作DOM属性以应用主题和语言
+
+## 与其他模块关系
+
+- 被AppProviders使用来初始化应用设置
+- 与主题辅助函数(helpers/theme)集成来管理应用外观
+- 与本地化辅助函数(helpers/localization)集成来管理应用语言
+- 与其他store互补，共同管理应用状态：
+  - settings.ts: 用户设置
+  - app.ts: 界面状态
+  - data.ts: 应用数据
+
+## 使用示例
+
+```tsx
+// 在组件中使用settings store
+function ThemeToggle() {
+  const { theme, toggleTheme } = useSettingsStore()
+  
+  return (
+    <button onClick={toggleTheme}>
+      {theme === 'dark' ? '切换到亮色模式' : '切换到暗色模式'}
+    </button>
+  )
+}
+
+// 语言选择器
+function LanguageSelector() {
+  const { language, setLanguage } = useSettingsStore()
+  
+  return (
+    <select 
+      value={language} 
+      onChange={(e) => setLanguage(e.target.value)}
+    >
+      <option value="en">English</option>
+      <option value="zh">中文</option>
+      <option value="es">Español</option>
+    </select>
+  )
+} 

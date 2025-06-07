@@ -1,0 +1,74 @@
+# App Store
+
+## 概述
+
+`app.ts` 实现了应用的核心UI状态管理，使用Zustand库创建一个全局状态store，处理诸如侧边栏状态、当前活动视图和选定项目等界面状态。状态持久化到localStorage，确保用户界面设置在会话之间保持一致。
+
+## 实现细节
+
+store包含以下核心状态：
+
+- **sidebarOpen**: 控制侧边栏是否展开
+- **activeView**: 当前活动视图 (历史记录、提示词、模型等)
+- **selectedListId**: 当前选中的列表项ID
+
+并提供这些状态的修改方法：
+
+- **setSidebarOpen**: 设置侧边栏状态
+- **toggleSidebar**: 切换侧边栏开关状态
+- **setActiveView**: 切换当前活动视图
+- **setSelectedListId**: 设置当前选中的列表项
+
+## 技术注解
+
+- 使用Zustand的persist中间件来保存状态到localStorage
+- 通过partialize选择性保存部分状态，避免保存临时UI状态
+- 保持状态设计的简洁性，仅包含UI相关状态
+
+## 设计思考
+
+1. **状态分离**: UI状态与应用数据分离，app.ts仅处理界面状态
+2. **持久化策略**: 只持久化对用户体验有长期影响的状态，临时状态不持久化
+3. **最小化状态**: 只保存必要的状态，其他可派生状态通过组件计算
+
+## 与其他模块关系
+
+- 被各个UI组件和页面使用来读取和修改界面状态
+- 与settings.ts和data.ts形成互补，共同管理应用的完整状态
+  - app.ts: 界面状态
+  - settings.ts: 用户设置
+  - data.ts: 应用数据
+
+## 使用示例
+
+```tsx
+// 在组件中使用app store
+function SidebarToggle() {
+  const { sidebarOpen, toggleSidebar } = useAppStore()
+  
+  return (
+    <button onClick={toggleSidebar}>
+      {sidebarOpen ? 'Hide Sidebar' : 'Show Sidebar'}
+    </button>
+  )
+}
+
+// 使用多个状态
+function Navigation() {
+  const { activeView, setActiveView } = useAppStore()
+  
+  return (
+    <nav>
+      {views.map(view => (
+        <button 
+          key={view}
+          onClick={() => setActiveView(view)}
+          className={activeView === view ? 'active' : ''}
+        >
+          {view}
+        </button>
+      ))}
+    </nav>
+  )
+}
+``` 

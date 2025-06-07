@@ -1,0 +1,11 @@
+---
+description: rules to define the docs
+globs: 
+alwaysApply: false
+---
+docs should be in @docs as a .md file.
+
+docs is written for users to understand the function and design of the repo while [source-logic.mdc](mdc:.cursor/rules/project/source-logic.mdc) is written for developer to understand the exact code.
+
+no specific code in docs
+

@@ -1,0 +1,105 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# App Store (应用状态管理)
+
+## 概述
+
+App Store管理Runebar应用的UI相关状态，包括侧边栏状态、当前活动视图和列表选择等。这个store使用Zustand的persist中间件将状态持久化到localStorage，确保用户界面状态在应用重启后保持一致。
+
+## 状态结构
+
+```typescript
+type AppState = {
+  // 核心状态
+  sidebarOpen: boolean
+  activeView: 'history' | 'prompts' | 'models' | 'tools' | 'playground' | 'settings'
+  selectedListId: string | null
+  
+  // 操作方法
+  setSidebarOpen: (open: boolean) => void
+  toggleSidebar: () => void
+  setActiveView: (view: AppState['activeView']) => void
+  setSelectedListId: (id: string | null) => void
+}
+```
+
+## 实现细节
+
+```typescript
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      // 初始状态
+      sidebarOpen: true,
+      activeView: 'history',
+      selectedListId: null,
+      
+      // 状态更新方法
+      setSidebarOpen: (open) => set({ sidebarOpen: open }),
+      toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+      setActiveView: (view) => set({ activeView: view }),
+      setSelectedListId: (id) => set({ selectedListId: id }),
+    }),
+    {
+      name: 'runebar-app-state',
+      partialize: (state) => ({
+        sidebarOpen: state.sidebarOpen,
+        activeView: state.activeView,
+        // 不持久化选中的列表ID，每次启动重新选择
+      }),
+    }
+  )
+)
+```
+
+## 使用示例
+
+```tsx
+import { useAppStore } from '@/store'
+
+function Sidebar() {
+  const { sidebarOpen, toggleSidebar, activeView, setActiveView } = useAppStore()
+  
+  return (
+    <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+      <button onClick={toggleSidebar}>
+        {sidebarOpen ? 'Close' : 'Open'}
+      </button>
+      
+      <nav>
+        <button 
+          className={activeView === 'history' ? 'active' : ''}
+          onClick={() => setActiveView('history')}
+        >
+          History
+        </button>
+        {/* 其他导航项 */}
+      </nav>
+    </div>
+  )
+}
+```
+
+## 设计考量
+
+1. **简洁性**: 
+   - 仅包含UI相关状态，避免与业务逻辑混合
+   - 每个状态都有对应的setter函数，简化使用
+
+2. **性能**: 
+   - 使用Zustand的选择性订阅机制避免不必要的重渲染
+   - 将状态分解为细粒度的部分，允许组件仅订阅需要的状态
+
+3. **持久化**:
+   - 选择性持久化，仅保存需要跨会话保留的UI状态
+   - 使用partialize函数排除不需要持久化的状态
+
+4. **扩展性**:
+   - 状态类型使用TypeScript联合类型，便于添加新的视图类型
+   - 结构清晰，便于添加新的UI状态

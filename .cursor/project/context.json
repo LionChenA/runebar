@@ -1,82 +1,50 @@
 {
-  "name": "runebar",
-  "productName": "runebar",
-  "version": "1.0.0",
-  "description": "Harnessing LLM capabilities to enhance productivity and creativity",
-  "framework": "Electron",
-  "ui": {
-    "framework": "React",
-    "version": "19.1.0",
-    "components": "shadcn/ui",
-    "styling": "Tailwind CSS",
-    "tailwindVersion": "4.1.7",
-    "icons": "lucide-react",
-    "router": "TanStack Router",
-    "fonts": ["Geist", "Geist Mono", "Tomorrow"]
+  "project": {
+    "name": "runebar",
+    "description": "Harnessing LLM capabilities to enhance productivity and creativity",
+    "type": "electron-react-app"
   },
-  "bundler": "Vite",
-  "typescript": {
-    "version": "5.8.3",
-    "compilerOptions": {
-      "target": "ESNext",
-      "jsx": "react",
-      "paths": {
-        "@/*": ["./src/*"]
-      },
-      "baseUrl": "."
+  "framework": {
+    "ui": "react",
+    "state": {
+      "global": "zustand",
+      "server": "@tanstack/react-query"
+    },
+    "router": "@tanstack/react-router",
+    "styling": "tailwindcss",
+    "components": {
+      "ui": "shadcn/ui",
+      "base": "radix-ui"
     }
   },
-  "tailwind": {
-    "darkMode": "class",
-    "cssVariables": true,
-    "baseColor": "slate",
-    "cssPath": "src/styles/global.css",
-    "animations": true
+  "electron": {
+    "forge": true,
+    "buildTool": "vite"
   },
-  "testing": {
-    "unit": "Vitest",
-    "e2e": "Playwright",
-    "testingLibrary": "React Testing Library"
-  },
-  "linting": {
-    "tool": "Biome",
-    "formatter": {
-      "indentStyle": "space",
-      "indentWidth": 2,
-      "lineWidth": 100,
-      "quoteStyle": "double",
-      "semicolons": "asNeeded",
-      "trailingCommas": "all"
-    }
-  },
-  "packaging": {
-    "tool": "Electron Forge",
-    "makers": ["Squirrel", "ZIP", "RPM", "DEB"]
-  },
-  "i18n": {
-    "library": "i18next"
+  "development": {
+    "linter": "biome",
+    "formatter": "biome",
+    "testing": {
+      "unit": "vitest",
+      "e2e": "playwright"
+    },
+    "commitLint": true
   },
   "structure": {
     "src": {
-      "assets": "Fonts and other assets",
-      "components": {
-        "template": "Template components",
-        "ui": "shadcn/ui components"
-      },
-      "helpers": {
-        "ipc": "IPC related functions"
-      },
-      "layouts": "Layout components",
-      "localization": "i18n files",
-      "pages": "App pages",
-      "routes": "TanStack Router routes",
-      "styles": "Global styles",
-      "tests": {
-        "e2e": "Playwright tests",
-        "unit": "Vitest tests"
-      },
-      "types": "TypeScript type definitions",
-      "utils": "Utility functions"
+      "components": "UI组件",
+      "helpers": "辅助函数",
+      "hooks": "自定义React钩子",
+      "layouts": "页面布局组件",
+      "localization": "国际化文件",
+      "pages": "页面组件",
+      "providers": "上下文提供者",
+      "routes": "路由定义",
+      "store": "状态管理",
+      "styles": "样式文件",
+      "tests": "测试文件",
+      "types": "类型定义",
+      "utils": "通用工具函数"
     }
   }
 }

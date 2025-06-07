@@ -1,0 +1,116 @@
+# Data Store
+
+## 概述
+
+`data.ts` 实现了应用核心数据的状态管理，包括LLM模型配置和提示词模板。这个store使用Zustand创建全局数据状态，并通过持久化中间件保存到localStorage，同时处理敏感信息的筛选。它提供了完整的CRUD操作，让应用能够管理用户的模型和提示词数据。
+
+## 实现细节
+
+store管理两种主要数据类型：
+
+### 模型 (Model)
+- **id**: 唯一标识符
+- **name**: 模型名称
+- **provider**: 提供商 (openai, anthropic, google等)
+- **apiKey**: API密钥 (敏感信息，不持久化)
+- **parameters**: 模型参数
+- **isDefault**: 是否为默认模型
+
+### 提示词 (Prompt)
+- **id**: 唯一标识符
+- **name**: 提示词名称
+- **content**: 提示词内容
+- **tags**: 标签数组
+- **createdAt**: 创建时间
+- **updatedAt**: 更新时间
+
+store提供以下方法：
+
+#### 模型操作
+- **addModel**: 添加新模型
+- **updateModel**: 更新现有模型
+- **deleteModel**: 删除模型
+- **getModelById**: 通过ID获取模型
+- **getDefaultModel**: 获取默认模型
+- **setDefaultModel**: 设置默认模型
+
+#### 提示词操作
+- **addPrompt**: 添加新提示词
+- **updatePrompt**: 更新现有提示词
+- **deletePrompt**: 删除提示词
+- **getPromptById**: 通过ID获取提示词
+
+## 技术注解
+
+- 使用uuid库生成唯一ID
+- 通过partialize筛选敏感信息(apiKey)，避免保存到localStorage
+- 自动维护提示词的创建和更新时间戳
+- 返回操作ID以支持链式操作
+
+## 设计思考
+
+1. **数据安全**: 敏感信息不持久化，保护用户隐私
+2. **数据完整性**: 自动生成ID和时间戳，确保数据完整性
+3. **默认模型**: 支持设置默认模型，简化用户体验
+4. **类型安全**: 全面的TypeScript类型定义确保类型安全
+
+## 与其他模块关系
+
+- 被LLM相关hooks使用来获取模型配置
+- 被提示词管理UI使用来管理提示词
+- 与其他store互补，共同管理应用状态：
+  - data.ts: 应用数据
+  - app.ts: 界面状态
+  - settings.ts: 用户设置
+
+## 使用示例
+
+```tsx
+// 添加新模型
+function AddModelForm() {
+  const [name, setName] = useState('')
+  const [apiKey, setApiKey] = useState('')
+  const { addModel } = useDataStore()
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    addModel({
+      name,
+      provider: 'openai',
+      apiKey,
+      parameters: { temperature: 0.7 }
+    })
+    setName('')
+    setApiKey('')
+  }
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="模型名称" />
+      <input value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="API密钥" type="password" />
+      <button type="submit">添加模型</button>
+    </form>
+  )
+}
+
+// 使用默认模型
+function DefaultModelSelector() {
+  const { models, getDefaultModel, setDefaultModel } = useDataStore()
+  const defaultModel = getDefaultModel()
+  
+  return (
+    <div>
+      <h3>选择默认模型</h3>
+      <select 
+        value={defaultModel?.id || ''}
+        onChange={(e) => setDefaultModel(e.target.value)}
+      >
+        <option value="" disabled>选择模型</option>
+        {models.map(model => (
+          <option key={model.id} value={model.id}>{model.name}</option>
+        ))}
+      </select>
+    </div>
+  )
+}
+``` 

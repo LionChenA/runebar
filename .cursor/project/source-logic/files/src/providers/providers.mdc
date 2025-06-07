@@ -1,0 +1,123 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Provider组件
+
+## 概述
+
+Provider组件是Runebar应用状态管理系统的关键组成部分，负责初始化和配置状态系统，并为应用提供必要的上下文。这些组件包括QueryProvider（TanStack Query配置）和AppProviders（整合所有Provider）。
+
+## QueryProvider
+
+QueryProvider配置TanStack Query客户端，处理应用中的异步数据请求。
+
+### 实现细节
+
+```tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactNode } from 'react'
+
+// 创建QueryClient实例
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // 默认配置
+      staleTime: 1000 * 60 * 5, // 5分钟过期
+      cacheTime: 1000 * 60 * 30, // 30分钟缓存
+      retry: 1, // 失败后重试一次
+      refetchOnWindowFocus: false, // 窗口聚焦时不重新获取
+    },
+  },
+})
+
+interface QueryProviderProps {
+  children: ReactNode
+}
+
+export function QueryProvider({ children }: QueryProviderProps) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      {/* 开发环境中启用React Query开发工具 */}
+      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
+    </QueryClientProvider>
+  )
+}
+```
+
+## AppProviders
+
+AppProviders组件整合了所有Provider组件，并初始化设置状态。
+
+### 实现细节
+
+```tsx
+import { ReactNode, useEffect } from 'react'
+import { QueryProvider } from './query-provider'
+import { useSettingsStore } from '@/store'
+
+interface AppProvidersProps {
+  children: ReactNode
+}
+
+export function AppProviders({ children }: AppProvidersProps) {
+  // 初始化设置
+  const initializeSettings = useSettingsStore((state) => state.initialize)
+  
+  useEffect(() => {
+    // 在应用启动时初始化设置
+    initializeSettings()
+  }, [initializeSettings])
+  
+  return (
+    // 嵌套所有provider组件
+    <QueryProvider>
+      {children}
+    </QueryProvider>
+  )
+}
+```
+
+## 应用入口集成
+
+在应用的根组件中使用AppProviders包装整个应用：
+
+```tsx
+import { AppProviders } from '@/providers'
+import { MainLayout } from '@/layouts'
+
+function App() {
+  return (
+    <AppProviders>
+      <MainLayout />
+    </AppProviders>
+  )
+}
+
+export default App
+```
+
+## 设计考量
+
+1. **模块化**:
+   - 每个Provider组件负责特定功能
+   - 便于添加或删除功能
+
+2. **配置集中**:
+   - 所有Provider配置集中在一处
+   - 便于管理和调整
+
+3. **优化开发体验**:
+   - 在开发环境中启用ReactQueryDevtools
+   - 便于调试和监控异步请求
+
+4. **初始化流程**:
+   - 在应用启动时自动初始化设置
+   - 确保用户设置在应用启动时立即应用
+
+5. **扩展性**:
+   - 设计允许轻松添加新的Provider组件
+   - 例如可以添加国际化、主题、认证等Provider

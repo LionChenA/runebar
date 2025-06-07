@@ -3,7 +3,7 @@ description:
 globs: src/**/*.ts,src/**/*.tsx
 alwaysApply: false
 ---
-Maintains a structured, human-readable `.md` file for each source code file. Includes module summary, developer notes, and explanation of core functionality without directly including code implementations.
+Maintains a structured, LLM&human-readable `.mdc` file for each source code file. Includes module summary, developer notes, and explanation of core functionality without directly including code implementations.
 
 # 1. Project Analysis and Global Dependencies
 

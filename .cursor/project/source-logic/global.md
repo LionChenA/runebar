@@ -1,3 +1,107 @@
+# Runebar - 全局依赖关系
+
+## 项目概述
+
+Runebar 是一个基于 Electron 的 AI 辅助工具，为用户提供 LLM 功能访问、提示词管理和工具集成。应用具有两个主要界面：
+
+1. **Main Interface**: 主界面，提供完整功能和配置
+2. **Runebar Interface**: 快速访问界面，通过全局快捷键激活
+
+## 核心技术栈
+
+### 基础框架
+- **Electron**: 跨平台桌面应用框架
+- **React 19**: UI 框架
+- **TypeScript**: 静态类型检查
+- **Vite**: 构建工具
+
+### 状态管理
+- **Zustand**: 全局 UI 状态和应用状态管理
+- **TanStack Query**: 服务器状态和数据获取
+
+### UI 组件
+- **shadcn/ui**: 基于 Radix UI 的组件系统
+- **Radix UI**: 无样式、可访问的 UI 原语
+- **Tailwind CSS**: 原子化 CSS 框架
+- **Lucide Icons**: 图标库
+
+### 路由
+- **TanStack Router**: 类型安全的客户端路由
+
+### 国际化
+- **i18next**: 国际化框架
+- **react-i18next**: React 国际化绑定
+
+## 文件结构
+
+```
+src/
+├── assets/         # 字体和其他资源
+├── components/     # UI 组件
+│   ├── template/   # 模板组件
+│   └── ui/         # shadcn/ui 组件
+├── helpers/        # 辅助函数
+│   ├── ipc/        # IPC 相关函数
+│   ├── theme/      # 主题相关功能
+│   └── localization/   # 本地化辅助函数
+├── hooks/          # 自定义 React Hooks
+├── layouts/        # 页面布局组件
+├── localization/   # i18n 文件
+├── pages/          # 页面组件
+├── providers/      # Context Providers
+├── routes/         # 路由定义
+│   ├── main/       # 主窗口路由
+│   └── runebar/    # Runebar 窗口路由
+├── store/          # 状态管理 (Zustand)
+├── styles/         # 全局样式
+├── tests/          # 测试
+│   ├── e2e/        # Playwright 端到端测试
+│   └── unit/       # Vitest 单元测试
+├── types/          # TypeScript 类型定义
+└── utils/          # 通用工具函数
+```
+
+## 状态管理架构
+
+### Zustand Stores
+- **app.ts**: UI 状态 (侧边栏、活动视图等)
+- **settings.ts**: 用户设置 (主题、语言等)
+- **data.ts**: 应用数据 (模型、提示词等)
+
+### React Query
+用于所有 API 请求和异步数据获取，包括：
+- LLM API 调用
+- 外部服务集成
+
+## 全局模式和约定
+
+### 组件命名
+- PascalCase 用于组件名
+- kebab-case 用于文件名
+
+### 状态管理
+- Zustand 用于全局 UI 和应用状态
+- TanStack Query 用于服务器数据和 API 状态
+- React 状态用于局部组件状态
+
+### CSS 约定
+- 使用 Tailwind 类进行样式设置
+- 避免内联样式和自定义 CSS 文件
+- 使用 clsx/cn 工具函数组合条件类名
+
+### 导入约定
+- 使用别名导入 (例如 `@/components`)
+- 按以下顺序对导入进行分组：
+  1. React 和第三方库
+  2. 内部组件和 hooks
+  3. 类型和工具函数
+  4. 样式
+
+### 错误处理
+- 使用 try/catch 处理异步错误
+- 使用 React Query 的错误处理功能
+- 显示友好的用户错误消息
+
 # Global Dependencies and Patterns
 
 基于对项目的分析，以下是在整个代码库中共享的关键依赖和模式。
