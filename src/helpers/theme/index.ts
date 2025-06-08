@@ -1,6 +1,6 @@
 export * from "./theme_constants"
 export * from "./theme_types"
-// 不再导出 theme_manager.ts 给渲染进程使用
+// 不能导出 theme_manager.ts 给渲染进程使用，因为渲染进程不能直接访问主进程的模块
 // export * from "./theme_manager"
 
 export type ThemeMode = "light" | "dark" | "system"

@@ -13,7 +13,7 @@ export const RUNEBAR_WINDOW_CONFIG: RunebarWindowConfig = {
     y: 100, // 距离屏幕顶部的距离
   },
   memorySaveDelay: 60000, // 60秒后销毁窗口以节省内存
-  transparentBg: "#00000000", // 完全透明背景
+  transparentBg: "#1A1A1A80", // 半透明深色背景（深色模式友好）
 }
 
 // 主窗口配置

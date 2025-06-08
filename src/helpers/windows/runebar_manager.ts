@@ -99,7 +99,7 @@ export class RunebarWindowManager {
       },
     })
 
-    this.logger.info("Created window with transparent settings")
+    this.logger.info(`Created window with background color: ${RUNEBAR_WINDOW_CONFIG.transparentBg}`)
 
     // 窗口定位 - 居中
     this.runebarWindow.setPosition(
@@ -128,10 +128,10 @@ export class RunebarWindowManager {
     })
 
     // 默认不显示开发者工具
-    if (this.inDevelopment) {
-      this.logger.debug("Opening DevTools for debugging")
-      this.runebarWindow.webContents.openDevTools({ mode: "detach" })
-    }
+    // if (this.inDevelopment) {
+    //   this.logger.debug("Opening DevTools for debugging")
+    //   this.runebarWindow.webContents.openDevTools({ mode: "detach" })
+    // }
 
     // 监听窗口加载完成事件
     this.runebarWindow.webContents.on("did-finish-load", () => {

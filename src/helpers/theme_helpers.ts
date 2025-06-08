@@ -68,9 +68,18 @@ export function subscribeToThemeChanges(callback: (event: ThemeChangeEvent) => v
  * @param isDarkMode 是否是暗色模式
  */
 export function updateDocumentTheme(isDarkMode: boolean) {
-  if (!isDarkMode) {
-    document.documentElement.classList.remove(DARK_CLASS_NAME)
+  const root = document.documentElement
+
+  // 确保清除现有主题类
+  root.classList.remove("light", DARK_CLASS_NAME)
+
+  // 添加新的主题类
+  if (isDarkMode) {
+    root.classList.add(DARK_CLASS_NAME)
   } else {
-    document.documentElement.classList.add(DARK_CLASS_NAME)
+    root.classList.add("light")
   }
+
+  // 为body元素添加bg-background类以确保背景颜色跟随主题
+  document.body.classList.add("bg-background")
 }

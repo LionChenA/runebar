@@ -2,6 +2,8 @@ import { RouterProvider } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { runebarRouter } from "./routes/runebar/router"
 import "./localization/i18n"
+import { RunebarContainer } from "@/components/ui/runebar-container"
+import { cn } from "@/utils/tailwind"
 import type { ThemeMode } from "./helpers/theme"
 import { subscribeToThemeChanges } from "./helpers/theme_helpers"
 
@@ -64,26 +66,25 @@ export function RunebarApp() {
   // 如果路由器加载失败，显示错误信息
   if (routerError) {
     return (
-      <div className={`${themeClass} p-4`} style={{ backgroundColor: "rgba(0,0,0,0.7)" }}>
-        <h2 className="text-red-500 font-bold">Router Error</h2>
-        <pre className="text-white text-sm overflow-auto max-h-96">{routerError}</pre>
+      <div className={cn(themeClass, "w-full h-screen m-0 p-0 overflow-hidden bg-black/80")}>
+        <div className="p-4">
+          <h2 className="text-red-500 font-bold">Router Error</h2>
+          <pre className="text-white text-sm overflow-auto max-h-96">{routerError}</pre>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className={`${themeClass} h-full w-full`} style={{ backgroundColor: "transparent" }}>
-      <div
-        className="flex items-center justify-center w-full h-full p-4"
-        style={{ backgroundColor: "transparent" }}
-      >
-        <div className="w-full max-w-xl rounded-lg shadow-lg border border-border bg-background">
+    <div className={cn(themeClass, "w-full h-screen m-0 p-0 overflow-hidden")}>
+      <div className="flex items-center justify-center w-full h-full p-4">
+        <RunebarContainer>
           {!routerReady ? (
             <div className="p-4 text-center">Loading Runebar...</div>
           ) : (
             <RouterProvider router={runebarRouter} />
           )}
-        </div>
+        </RunebarContainer>
       </div>
     </div>
   )

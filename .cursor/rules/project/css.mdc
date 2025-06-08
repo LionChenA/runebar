@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Core Principles
+Use Tailwind CSS: Leverage the rich styling system defined in global.css
+Avoid Inline CSS: Don't write CSS directly in HTML or component files
+Component-Based Styling: Follow shadcn patterns with cva and cn utilities
+Best Practices
+Use the cn utility for combining class names conditionally
+Define component variants with cva for consistent styling patterns
+Maintain theme consistency using the predefined CSS variables
+Implement dark mode through the .dark class selector
+Implementation Guidelines
+Keep styling logic within component files
+Ensure all components respond correctly to theme changes
+Use Tailwind's utility classes over custom CSS
+Follow the defined color system and design tokens

@@ -7,3 +7,5 @@ alwaysApply: true
 Read [context.json](mdc:.cursor/project/context.json) first to get the basic configuration of the project, if no this file, use [project-context.mdc](mdc:.cursor/rules/project/project-context.mdc) to create one.
 
 Incremenetally matain a .cursor/README.md for introducing the rules 
+
+If you need to change the css or styles of anything, read [css.mdc](mdc:.cursor/rules/project/css.mdc)
