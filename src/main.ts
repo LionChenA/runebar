@@ -9,8 +9,8 @@ import { ThemeManager } from "./helpers/theme/theme_manager"
 import { RunebarWindowManager } from "./helpers/windows/runebar_manager"
 
 // 声明在全局环境下可用的变量，由Electron Forge注入
-declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string | undefined
-declare const MAIN_WINDOW_VITE_NAME: string | undefined
+declare const APP_WINDOW_VITE_DEV_SERVER_URL: string | undefined
+declare const APP_WINDOW_VITE_NAME: string | undefined
 
 const inDevelopment = process.env.NODE_ENV === "development"
 
@@ -41,10 +41,10 @@ function createWindow() {
   // 预创建窗口但不显示
   runebarManager.createWindow()
 
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+  if (APP_WINDOW_VITE_DEV_SERVER_URL) {
+    mainWindow.loadURL(APP_WINDOW_VITE_DEV_SERVER_URL)
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
+    mainWindow.loadFile(path.join(__dirname, `../renderer/${APP_WINDOW_VITE_NAME}/index.html`))
   }
 }
 

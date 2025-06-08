@@ -4,7 +4,7 @@ import { subscribeToThemeChanges, syncThemeWithLocal } from "./helpers/theme_hel
 import "./localization/i18n"
 import { RouterProvider } from "@tanstack/react-router"
 import { updateAppLanguage } from "./helpers/language_helpers"
-import { router } from "./routes/main/router"
+import { router } from "./routes/app/router"
 
 export default function App() {
   const { i18n } = useTranslation()

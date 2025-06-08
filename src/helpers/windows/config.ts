@@ -16,8 +16,8 @@ export const RUNEBAR_WINDOW_CONFIG: RunebarWindowConfig = {
   transparentBg: "#1A1A1A80", // 半透明深色背景（深色模式友好）
 }
 
-// 主窗口配置
-export const MAIN_WINDOW_CONFIG: WindowConfig = {
+// 主应用窗口配置
+export const APP_WINDOW_CONFIG: WindowConfig = {
   width: 800,
   height: 600,
   minWidth: 800,
@@ -27,7 +27,7 @@ export const MAIN_WINDOW_CONFIG: WindowConfig = {
 // 获取窗口HTML页面名称
 export function getWindowHtmlFilename(type: WindowType): string {
   switch (type) {
-    case WindowType.MAIN:
+    case WindowType.APP:
       return "index.html"
     case WindowType.RUNEBAR:
       return "runebar.html"

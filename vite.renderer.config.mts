@@ -20,10 +20,10 @@ export default defineConfig({
         // Multi-entry configuration for Electron app:
         // - Defines separate entry points for different windows/pages
         // - Each entry generates its own JS bundle for optimized loading
-        // - In development, these become accessible routes (e.g., /main, /runebar)
+        // - In development, these become accessible routes (e.g., /app, /runebar)
         // - In production, creates separate HTML files for each window
         // - Enables MPA architecture instead of SPA for better separation of concerns
-        main: path.resolve(__dirname, "index.html"),
+        app: path.resolve(__dirname, "index.html"),
         runebar: path.resolve(__dirname, "runebar.html"),
       },
       external: ["electron", ...builtinModules],

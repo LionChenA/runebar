@@ -3,7 +3,7 @@
  * 定义应用中所有窗口的类型
  */
 export enum WindowType {
-  MAIN = "main",
+  APP = "app",
   RUNEBAR = "runebar",
 }
 
