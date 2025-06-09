@@ -1,5 +1,7 @@
-import SecondPage from "@/pages/SecondPage"
-import StateDemoPage from "@/pages/StateDemoPage"
+import ModelsPage from "@/pages/ModelsPage"
+import PlaygroundPage from "@/pages/PlaygroundPage"
+import PromptPage from "@/pages/PromptPage"
+import ToolsPage from "@/pages/ToolsPage"
 import { createRoute } from "@tanstack/react-router"
 import HomePage from "../../pages/HomePage"
 import { AppRootRoute } from "./__root"
@@ -10,16 +12,34 @@ export const HomeRoute = createRoute({
   component: HomePage,
 })
 
-export const SecondPageRoute = createRoute({
+export const ToolsRoute = createRoute({
   getParentRoute: () => AppRootRoute,
-  path: "/second-page",
-  component: SecondPage,
+  path: "/tools",
+  component: ToolsPage,
 })
 
-export const StateDemoRoute = createRoute({
+export const PromptRoute = createRoute({
   getParentRoute: () => AppRootRoute,
-  path: "/state-demo",
-  component: StateDemoPage,
+  path: "/prompt",
+  component: PromptPage,
 })
 
-export const appRouteTree = AppRootRoute.addChildren([HomeRoute, SecondPageRoute, StateDemoRoute])
+export const ModelsRoute = createRoute({
+  getParentRoute: () => AppRootRoute,
+  path: "/models",
+  component: ModelsPage,
+})
+
+export const PlaygroundRoute = createRoute({
+  getParentRoute: () => AppRootRoute,
+  path: "/playground",
+  component: PlaygroundPage,
+})
+
+export const appRouteTree = AppRootRoute.addChildren([
+  HomeRoute,
+  ToolsRoute,
+  PromptRoute,
+  ModelsRoute,
+  PlaygroundRoute,
+])
