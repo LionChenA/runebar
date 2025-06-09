@@ -1,8 +1,8 @@
+import { AppProviders } from "@/providers"
 import React from "react"
 import { createRoot } from "react-dom/client"
-import App from "./App"
-import { AppProviders } from "./providers"
-import "./styles/global.css"
+import "@/styles/global.css"
+import App from "@/routes/app/App"
 
 // 渲染应用
 createRoot(document.getElementById("root") as HTMLElement).render(

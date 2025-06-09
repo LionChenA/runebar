@@ -44,6 +44,8 @@ function createWindow() {
   if (APP_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(APP_WINDOW_VITE_DEV_SERVER_URL)
   } else {
+    // 注意：HTML 文件的路径已经在 getWindowHtmlFilename 函数中更新，
+    // 这里不需要修改，因为 APP_WINDOW_VITE_NAME 是由 Electron Forge 注入的
     mainWindow.loadFile(path.join(__dirname, `../renderer/${APP_WINDOW_VITE_NAME}/index.html`))
   }
 }

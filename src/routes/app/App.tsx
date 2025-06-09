@@ -1,10 +1,10 @@
+import { subscribeToThemeChanges, syncThemeWithLocal } from "@/helpers/theme_helpers"
+import { RouterProvider } from "@tanstack/react-router"
 import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { subscribeToThemeChanges, syncThemeWithLocal } from "./helpers/theme_helpers"
-import "./localization/i18n"
-import { RouterProvider } from "@tanstack/react-router"
-import { updateAppLanguage } from "./helpers/language_helpers"
-import { router } from "./routes/app/router"
+import "@/localization/i18n"
+import { updateAppLanguage } from "@/helpers/language_helpers"
+import { router } from "./router"
 
 export default function App() {
   const { i18n } = useTranslation()

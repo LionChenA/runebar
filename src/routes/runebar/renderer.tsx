@@ -1,7 +1,7 @@
-import "./styles/global.css"
+import "@/styles/global.css"
+import { RunebarApp } from "@/routes/runebar/RunebarApp"
 import React, { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { RunebarApp } from "./RunebarApp"
 
 // 确保 DOM 完全加载
 document.addEventListener("DOMContentLoaded", () => {

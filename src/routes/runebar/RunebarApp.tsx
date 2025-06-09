@@ -1,11 +1,11 @@
+import { RunebarContainer } from "@/components/ui/runebar-container"
+import type { ThemeMode } from "@/helpers/theme"
+import { subscribeToThemeChanges } from "@/helpers/theme_helpers"
+import { cn } from "@/utils/tailwind"
 import { RouterProvider } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
-import { runebarRouter } from "./routes/runebar/router"
-import "./localization/i18n"
-import { RunebarContainer } from "@/components/ui/runebar-container"
-import { cn } from "@/utils/tailwind"
-import type { ThemeMode } from "./helpers/theme"
-import { subscribeToThemeChanges } from "./helpers/theme_helpers"
+import "@/localization/i18n"
+import { runebarRouter } from "./router"
 
 export function RunebarApp() {
   const [theme, setTheme] = useState<ThemeMode>("dark")

@@ -1,4 +1,4 @@
-import { RunebarCommand } from "@/components/RunebarCommand"
+import { Runebar } from "@/components/runebar"
 import { createRoute } from "@tanstack/react-router"
 import React from "react"
 import { RunebarRootRoute } from "./__root"
@@ -15,5 +15,5 @@ export const runebarRouteTree = RunebarRootRoute.addChildren([RunebarHomeRoute])
 
 // Runebar 主页组件
 function RunebarHome() {
-  return <RunebarCommand autoFocus={true} />
+  return <Runebar autoFocus={true} />
 }
