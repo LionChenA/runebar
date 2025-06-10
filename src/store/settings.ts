@@ -11,6 +11,8 @@ type SettingsState = {
   theme: ThemeMode
   language: string
   autoSave: boolean
+  fontFamily: string
+  fontSize: number
 
   // Theme related methods
   setTheme: (theme: ThemeMode) => void
@@ -19,6 +21,10 @@ type SettingsState = {
   // Language related methods
   setLanguage: (language: string) => void
 
+  // Font related methods
+  setFontFamily: (fontFamily: string) => void
+  setFontSize: (fontSize: number) => void
+
   // Other settings
   setAutoSave: (autoSave: boolean) => void
   toggleAutoSave: () => void
@@ -26,6 +32,23 @@ type SettingsState = {
   // Initialization
   initialize: () => void
 }
+
+/**
+ * Available font families
+ */
+export const FONT_FAMILIES = [
+  "system-ui",
+  "Geist",
+  "Geist Mono",
+  "Tomorrow",
+  "Arial",
+  "Helvetica",
+  "Verdana",
+  "Courier New",
+  "Courier",
+  "monospace",
+  "sans-serif",
+]
 
 /**
  * Settings store - Manages user settings
@@ -37,6 +60,8 @@ export const useSettingsStore = create<SettingsState>()(
       theme: getThemeMode(),
       language: getLanguage(),
       autoSave: true,
+      fontFamily: "system-ui",
+      fontSize: 14,
 
       // Theme related methods
       setTheme: (theme) => {
@@ -55,6 +80,10 @@ export const useSettingsStore = create<SettingsState>()(
         set({ language })
         setAppLanguage(language)
       },
+
+      // Font related methods
+      setFontFamily: (fontFamily) => set({ fontFamily }),
+      setFontSize: (fontSize) => set({ fontSize }),
 
       // Other settings
       setAutoSave: (autoSave) => set({ autoSave }),
