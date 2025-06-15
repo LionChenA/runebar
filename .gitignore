@@ -99,3 +99,4 @@ out/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+final_review_gate.py
