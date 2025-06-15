@@ -22,11 +22,11 @@ export default function DragWindowRegion({ title }: DragWindowRegionProps) {
 
 function WindowButtons() {
   return (
-    <div className="flex">
+    <div className="flex no-drag">
       <button
         title="Minimize"
         type="button"
-        className="p-2 hover:bg-slate-300"
+        className="p-2 hover:bg-slate-300 no-drag"
         onClick={minimizeWindow}
       >
         <svg aria-hidden="true" role="img" width="12" height="12" viewBox="0 0 12 12">
@@ -36,14 +36,19 @@ function WindowButtons() {
       <button
         title="Maximize"
         type="button"
-        className="p-2 hover:bg-slate-300"
+        className="p-2 hover:bg-slate-300 no-drag"
         onClick={maximizeWindow}
       >
         <svg aria-hidden="true" role="img" width="12" height="12" viewBox="0 0 12 12">
           <rect width="9" height="9" x="1.5" y="1.5" fill="none" stroke="currentColor" />
         </svg>
       </button>
-      <button type="button" title="Close" className="p-2 hover:bg-red-300" onClick={closeWindow}>
+      <button
+        type="button"
+        title="Close"
+        className="p-2 hover:bg-red-300 no-drag"
+        onClick={closeWindow}
+      >
         <svg aria-hidden="true" role="img" width="12" height="12" viewBox="0 0 12 12">
           <polygon
             fill="currentColor"

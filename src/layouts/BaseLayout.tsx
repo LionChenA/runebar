@@ -8,6 +8,9 @@ export default function BaseLayout({
 }: {
   children: React.ReactNode
 }) {
+  // 添加调试信息
+  console.log("BaseLayout rendering with children:", children)
+
   return (
     <div className="flex h-screen">
       <AppSidebar />
