@@ -22,9 +22,6 @@ export default function PageLayout({
     }
   }
 
-  // 添加调试信息
-  console.log("PageLayout rendering with children:", children)
-
   return (
     <main className="flex-1 overflow-auto bg-background">
       <div className={`${getContainerClasses()} ${className} min-h-full`}>{children}</div>
