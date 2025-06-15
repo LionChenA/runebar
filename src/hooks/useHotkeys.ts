@@ -1,23 +1,7 @@
+import type { ShortcutEvent } from "@/types/shortcut-types"
 import { useEffect, useRef } from "react"
-import type { ShortcutEvent } from "../helpers/ipc/shortcut/shortcut-context"
 
-// Window augmentation for TypeScript
-declare global {
-  interface Window {
-    electronShortcut?: {
-      onShortcut: (handler: (event: ShortcutEvent) => void) => () => void
-    }
-    __hotkeyDebug?: {
-      lastKeyEvent?: KeyboardEvent
-      registeredShortcuts: string[]
-      onKeyEvent?: (
-        event: KeyboardEvent,
-        eventType: "keydown" | "keyup",
-        shortcutTriggered: boolean,
-      ) => void
-    }
-  }
-}
+// Window interface is now declared in src/types.d.ts
 
 type KeyCombo = string
 type KeyHandler = (event: KeyboardEvent) => void

@@ -1,5 +1,5 @@
+import type { ShortcutEvent } from "@/types/shortcut-types"
 import { detectPlatform } from "../utils/platform"
-import type { ShortcutEvent } from "./ipc/shortcut/shortcut-context"
 
 /**
  * 规范化快捷键组合

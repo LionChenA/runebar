@@ -1,3 +1,5 @@
+import { initializeSettings } from "@/helpers/settings"
+import { setupRendererProcessHandlers } from "@/helpers/settings/renderer"
 import { useSettingsStore } from "@/store"
 import { useEffect } from "react"
 import type { ReactNode } from "react"
@@ -17,7 +19,14 @@ export function AppProviders({ children }: AppProvidersProps) {
 
   // Initialize settings when the app starts
   useEffect(() => {
+    // Initialize settings store
     initialize()
+
+    // Initialize config registry
+    initializeSettings()
+
+    // Setup renderer process IPC handlers
+    setupRendererProcessHandlers()
   }, [initialize])
 
   return (

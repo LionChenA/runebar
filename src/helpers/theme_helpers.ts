@@ -1,10 +1,5 @@
-import {
-  DARK_CLASS_NAME,
-  THEME_STORAGE_KEY,
-  type ThemeChangeEvent,
-  type ThemeMode,
-  type ThemePreferences,
-} from "./theme"
+import { DARK_CLASS_NAME, THEME_STORAGE_KEY } from "./theme/theme_constants"
+import type { ThemeChangeEvent, ThemeMode, ThemePreferences } from "./theme/theme_types"
 
 export async function getCurrentTheme(): Promise<ThemeMode> {
   const themePrefs = await window.themeMode.current()
@@ -55,7 +50,13 @@ export async function syncThemeWithLocal() {
  */
 export function subscribeToThemeChanges(callback: (event: ThemeChangeEvent) => void) {
   // 使用IPC渲染器注册主题变化事件
-  return window.themeMode.onThemeChange((event) => {
+  return window.themeMode.onThemeChange((themeState) => {
+    // 转换ThemeState为ThemeChangeEvent
+    const event: ThemeChangeEvent = {
+      themeMode: themeState.currentMode,
+      isDark: themeState.isDarkMode,
+    }
+
     // 更新DOM
     updateDocumentTheme(event.isDark)
     // 调用回调
