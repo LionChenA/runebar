@@ -16,34 +16,35 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <InitialIcons />
-        <div className="text-center">
-          <h1 className="font-mono text-4xl font-bold">{t("appName")}</h1>
-          <p className="text-sm text-muted-foreground" data-testid="pageTitle">
-            {t("titleHomePage")}
-          </p>
-        </div>
-
-        <div className="my-4 text-sm text-muted-foreground">
-          <p className="font-medium mb-2">{t("shortcutHelp.title")}</p>
-          <ul className="list-disc pl-5">
-            <li>{t("shortcutHelp.toggleTheme", { key: "Ctrl+D" })}</li>
-            <li>{t("shortcutHelp.toggleLanguage", { key: "Ctrl+L" })}</li>
-            <li>Open Runebar with Alt+Space</li>
-          </ul>
-        </div>
-
-        <div className="flex gap-2">
-          <LangToggle />
-          <ToggleTheme />
-          <Button variant="outline" onClick={handleRunebarToggle}>
-            Toggle Runebar
-          </Button>
-        </div>
+    <div className="flex flex-col items-center justify-center gap-4 min-h-full">
+      <InitialIcons />
+      <div className="text-center">
+        <h1 className="font-mono text-4xl font-bold">{t("appName")}</h1>
+        <p className="text-sm text-muted-foreground" data-testid="pageTitle">
+          {t("titleHomePage")}
+        </p>
       </div>
-      <Footer />
+
+      <div className="my-4 text-sm text-muted-foreground">
+        <p className="font-medium mb-2">{t("shortcutHelp.title")}</p>
+        <ul className="list-disc pl-5">
+          <li>{t("shortcutHelp.toggleTheme", { key: "Ctrl+D" })}</li>
+          <li>{t("shortcutHelp.toggleLanguage", { key: "Ctrl+L" })}</li>
+          <li>Open Runebar with Alt+Space</li>
+        </ul>
+      </div>
+
+      <div className="flex gap-2">
+        <LangToggle />
+        <ToggleTheme />
+        <Button variant="outline" onClick={handleRunebarToggle}>
+          Toggle Runebar
+        </Button>
+      </div>
+
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import SidebarLayout from "@/layouts/SidebarLayout"
+import BaseLayout from "@/layouts/BaseLayout"
 import { Outlet, createRootRoute } from "@tanstack/react-router"
 import React from "react"
 
@@ -9,8 +9,8 @@ export const AppRootRoute = createRootRoute({
 
 function AppRoot() {
   return (
-    <SidebarLayout>
+    <BaseLayout>
       <Outlet />
-    </SidebarLayout>
+    </BaseLayout>
   )
 }
