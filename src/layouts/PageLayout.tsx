@@ -24,7 +24,7 @@ export default function PageLayout({
 
   return (
     <main className="flex-1 overflow-auto bg-background">
-      <div className={`${getContainerClasses()} ${className}`}>{children}</div>
+      <div className={`${getContainerClasses()} ${className} min-h-full`}>{children}</div>
     </main>
   )
 }
