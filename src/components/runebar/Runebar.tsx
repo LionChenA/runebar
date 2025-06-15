@@ -72,6 +72,20 @@ export function Runebar({ autoFocus = false }: RunebarProps) {
     return undefined
   }, [autoFocus])
 
+  // 监听Cmd+,快捷键打开设置页面
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey && e.key === ",") {
+        e.preventDefault()
+        navigate({ to: "/settings" })
+        dispatch({ type: "CLOSE" })
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [navigate])
+
   // 监听全局快捷键事件
   useGlobalShortcut(
     (event) => {
