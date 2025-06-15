@@ -8,7 +8,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
 } from "../ui/sidebar"
 
 export default function AppSidebar() {
@@ -53,52 +52,50 @@ export default function AppSidebar() {
   ]
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <Sidebar
-        className="h-screen border-r pt-16"
-        style={{
-          width: "auto",
-          minWidth: "12rem",
-          maxWidth: "14rem",
-        }}
-        variant="inset"
-        collapsible="none"
-      >
-        <SidebarContent className="px-2">
-          <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.path}>
-                <Link to={item.path} className="w-full">
-                  <SidebarMenuButton
-                    isActive={currentPath === item.path}
-                    className="w-full"
-                    size="default"
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter className="px-2 pb-2">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <Link to="/settings" className="w-full">
+    <Sidebar
+      className="h-screen border-r pt-16"
+      style={{
+        width: "auto",
+        minWidth: "12rem",
+        maxWidth: "14rem",
+      }}
+      variant="inset"
+      collapsible="none"
+    >
+      <SidebarContent className="px-2">
+        <SidebarMenu>
+          {navItems.map((item) => (
+            <SidebarMenuItem key={item.path}>
+              <Link to={item.path} className="w-full">
                 <SidebarMenuButton
-                  isActive={currentPath === "/settings"}
+                  isActive={currentPath === item.path}
                   className="w-full"
                   size="default"
                 >
-                  <Settings className="h-5 w-5" />
-                  <span>Settings</span>
+                  {item.icon}
+                  <span>{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-    </SidebarProvider>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter className="px-2 pb-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Link to="/settings" className="w-full">
+              <SidebarMenuButton
+                isActive={currentPath === "/settings"}
+                className="w-full"
+                size="default"
+              >
+                <Settings className="h-5 w-5" />
+                <span>Settings</span>
+              </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
   )
 }
