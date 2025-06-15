@@ -105,7 +105,10 @@ export function Runebar({ autoFocus = false }: RunebarProps) {
       navigate({ to: "/" })
       dispatch({ type: "CLOSE" })
     } else if (value === "second-page") {
-      navigate({ to: "/second-page" })
+      navigate({ to: "/tools" })
+      dispatch({ type: "CLOSE" })
+    } else if (value === "settings") {
+      navigate({ to: "/settings" })
       dispatch({ type: "CLOSE" })
     }
   }

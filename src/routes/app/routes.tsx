@@ -1,3 +1,4 @@
+import { SettingsPage } from "@/components/runebar/pages/SettingsPage"
 import ModelsPage from "@/pages/ModelsPage"
 import PlaygroundPage from "@/pages/PlaygroundPage"
 import PromptPage from "@/pages/PromptPage"
@@ -36,10 +37,17 @@ export const PlaygroundRoute = createRoute({
   component: PlaygroundPage,
 })
 
+export const SettingsRoute = createRoute({
+  getParentRoute: () => AppRootRoute,
+  path: "/settings",
+  component: SettingsPage,
+})
+
 export const appRouteTree = AppRootRoute.addChildren([
   HomeRoute,
   ToolsRoute,
   PromptRoute,
   ModelsRoute,
   PlaygroundRoute,
+  SettingsRoute,
 ])

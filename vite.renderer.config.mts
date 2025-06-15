@@ -13,6 +13,12 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    // 定义Node.js全局变量以避免在浏览器环境中出现未定义错误
+    __dirname: "undefined",
+    __filename: "undefined",
+    global: "globalThis",
+  },
   // 配置多页应用，为每个窗口提供单独的入口点
   build: {
     rollupOptions: {
@@ -26,7 +32,12 @@ export default defineConfig({
         app: path.resolve(__dirname, "index.html"),
         runebar: path.resolve(__dirname, "runebar.html"),
       },
-      external: ["electron", ...builtinModules],
+      external: [
+        "electron",
+        ...builtinModules,
+        // 确保Node.js内置模块被外部化
+        ...builtinModules.map((m) => `node:${m}`),
+      ],
     },
   },
   resolve: {

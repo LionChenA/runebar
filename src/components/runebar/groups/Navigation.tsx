@@ -8,7 +8,7 @@
  */
 
 import { CommandGroup, CommandItem, CommandShortcut } from "@/components/ui/command"
-import { FileText, Home } from "lucide-react"
+import { FileText, Home, Settings } from "lucide-react"
 import type { CommandGroupProps } from "../types"
 
 export function NavigationGroup({ onSelect }: CommandGroupProps) {
@@ -23,6 +23,11 @@ export function NavigationGroup({ onSelect }: CommandGroupProps) {
         <FileText className="mr-2 h-4 w-4" />
         <span>Second Page</span>
         <CommandShortcut>⌘S</CommandShortcut>
+      </CommandItem>
+      <CommandItem value="settings" onSelect={onSelect}>
+        <Settings className="mr-2 h-4 w-4" />
+        <span>Settings</span>
+        <CommandShortcut>⌘,</CommandShortcut>
       </CommandItem>
     </CommandGroup>
   )

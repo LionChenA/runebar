@@ -1,3 +1,4 @@
+import { ConfigDomain } from "@/types/settings"
 import type { ConfigCategory, ConfigItem } from "@/types/settings"
 /**
  * Config Registry - Centralized system for managing application configurations
@@ -12,22 +13,27 @@ type ConfigRegistryState = {
   // Configuration categories
   categories: Record<string, ConfigCategory>
 
-  // Configuration items organized by category
-  items: Record<string, Record<string, ConfigItem>>
+  // Configuration items organized by domain and category
+  items: Record<ConfigDomain, Record<string, Record<string, ConfigItem>>>
 
   // Methods for managing categories
   registerCategory: (id: string, category: ConfigCategory) => void
   getCategory: (id: string) => ConfigCategory | undefined
   getAllCategories: () => Record<string, ConfigCategory>
+  getCategoriesByDomain: (domain: ConfigDomain) => Record<string, ConfigCategory>
 
   // Methods for managing configuration items
-  registerItem: (categoryId: string, id: string, item: ConfigItem) => void
-  getItem: (categoryId: string, id: string) => ConfigItem | undefined
-  updateItemValue: (categoryId: string, id: string, value: unknown) => void
+  registerItem: (domain: ConfigDomain, categoryId: string, id: string, item: ConfigItem) => void
+  getItem: (domain: ConfigDomain, categoryId: string, id: string) => ConfigItem | undefined
+  updateItemValue: (domain: ConfigDomain, categoryId: string, id: string, value: unknown) => void
   getAllItems: (
+    domain?: ConfigDomain,
     categoryId?: string,
-  ) => Record<string, Record<string, ConfigItem>> | Record<string, ConfigItem>
-  resetItem: (categoryId: string, id: string) => void
+  ) =>
+    | Record<ConfigDomain, Record<string, Record<string, ConfigItem>>>
+    | Record<string, Record<string, ConfigItem>>
+    | Record<string, ConfigItem>
+  resetItem: (domain: ConfigDomain, categoryId: string, id: string) => void
 
   // Import/Export methods
   exportConfig: () => Record<string, unknown>
@@ -42,7 +48,12 @@ export const useConfigRegistry = create<ConfigRegistryState>()(
     (set, get) => ({
       // Initial state
       categories: {},
-      items: {},
+      items: {
+        [ConfigDomain.GENERAL]: {},
+        [ConfigDomain.MODELS]: {},
+        [ConfigDomain.PROMPTS]: {},
+        [ConfigDomain.TOOLS]: {},
+      },
 
       // Category management methods
       registerCategory: (id, category) =>
@@ -60,16 +71,46 @@ export const useConfigRegistry = create<ConfigRegistryState>()(
         return state.categories
       },
 
+      getCategoriesByDomain: (domain) => {
+        const state = get()
+        const domainCategories: Record<string, ConfigCategory> = {}
+
+        for (const [id, category] of Object.entries(state.categories)) {
+          if (category.domain === domain) {
+            domainCategories[id] = category
+          }
+        }
+
+        return domainCategories
+      },
+
       // Item management methods
-      registerItem: (categoryId, id, item) =>
+      registerItem: (domain, categoryId, id, item) =>
         set((state) => {
-          // Create category if it doesn't exist
-          if (!state.items[categoryId]) {
+          // Create domain if it doesn't exist (should never happen with our enum)
+          if (!state.items[domain]) {
             return {
               items: {
                 ...state.items,
-                [categoryId]: {
-                  [id]: item,
+                [domain]: {
+                  [categoryId]: {
+                    [id]: item,
+                  },
+                },
+              },
+            }
+          }
+
+          // Create category if it doesn't exist
+          if (!state.items[domain][categoryId]) {
+            return {
+              items: {
+                ...state.items,
+                [domain]: {
+                  ...state.items[domain],
+                  [categoryId]: {
+                    [id]: item,
+                  },
                 },
               },
             }
@@ -79,54 +120,69 @@ export const useConfigRegistry = create<ConfigRegistryState>()(
           return {
             items: {
               ...state.items,
-              [categoryId]: {
-                ...state.items[categoryId],
-                [id]: item,
+              [domain]: {
+                ...state.items[domain],
+                [categoryId]: {
+                  ...state.items[domain][categoryId],
+                  [id]: item,
+                },
               },
             },
           }
         }),
 
-      getItem: (categoryId, id) => {
+      getItem: (domain, categoryId, id) => {
         const state = get()
-        return state.items[categoryId]?.[id]
+        return state.items[domain]?.[categoryId]?.[id]
       },
 
-      updateItemValue: (categoryId, id, value) =>
+      updateItemValue: (domain, categoryId, id, value) =>
         set((state) => {
-          const item = state.items[categoryId]?.[id]
+          const item = state.items[domain]?.[categoryId]?.[id]
           if (!item) return state
 
           return {
             items: {
               ...state.items,
-              [categoryId]: {
-                ...state.items[categoryId],
-                [id]: { ...item, value },
+              [domain]: {
+                ...state.items[domain],
+                [categoryId]: {
+                  ...state.items[domain][categoryId],
+                  [id]: { ...item, value },
+                },
               },
             },
           }
         }),
 
-      getAllItems: (categoryId) => {
+      getAllItems: (domain, categoryId) => {
         const state = get()
-        if (categoryId) {
-          return state.items[categoryId] || {}
+
+        if (domain && categoryId) {
+          return state.items[domain][categoryId] || {}
         }
+
+        if (domain) {
+          return state.items[domain] || {}
+        }
+
         return state.items
       },
 
-      resetItem: (categoryId, id) =>
+      resetItem: (domain, categoryId, id) =>
         set((state) => {
-          const item = state.items[categoryId]?.[id]
+          const item = state.items[domain]?.[categoryId]?.[id]
           if (!item) return state
 
           return {
             items: {
               ...state.items,
-              [categoryId]: {
-                ...state.items[categoryId],
-                [id]: { ...item, value: item.defaultValue },
+              [domain]: {
+                ...state.items[domain],
+                [categoryId]: {
+                  ...state.items[domain][categoryId],
+                  [id]: { ...item, value: item.defaultValue },
+                },
               },
             },
           }
@@ -136,10 +192,17 @@ export const useConfigRegistry = create<ConfigRegistryState>()(
         const state = get()
         const config: Record<string, unknown> = {}
 
-        for (const [categoryId, items] of Object.entries(state.items)) {
-          config[categoryId] = {}
-          for (const [itemId, item] of Object.entries(items)) {
-            ;(config[categoryId] as Record<string, unknown>)[itemId] = item.value
+        for (const [domain, domainItems] of Object.entries(state.items)) {
+          config[domain] = {}
+
+          for (const [categoryId, categoryItems] of Object.entries(domainItems)) {
+            ;(config[domain] as Record<string, unknown>)[categoryId] = {}
+
+            for (const [itemId, item] of Object.entries(categoryItems)) {
+              ;((config[domain] as Record<string, unknown>)[categoryId] as Record<string, unknown>)[
+                itemId
+              ] = item.value
+            }
           }
         }
 
@@ -150,20 +213,29 @@ export const useConfigRegistry = create<ConfigRegistryState>()(
         set((state) => {
           const newItems = { ...state.items }
 
-          for (const [categoryId, categoryConfig] of Object.entries(config)) {
-            if (!newItems[categoryId]) continue
+          for (const [domain, domainConfig] of Object.entries(config)) {
+            if (!newItems[domain as ConfigDomain]) continue
 
-            for (const [itemId, value] of Object.entries(
-              categoryConfig as Record<string, unknown>,
+            for (const [categoryId, categoryConfig] of Object.entries(
+              domainConfig as Record<string, unknown>,
             )) {
-              if (!newItems[categoryId][itemId]) continue
+              if (!newItems[domain as ConfigDomain][categoryId]) continue
 
-              newItems[categoryId] = {
-                ...newItems[categoryId],
-                [itemId]: {
-                  ...newItems[categoryId][itemId],
-                  value,
-                },
+              for (const [itemId, value] of Object.entries(
+                categoryConfig as Record<string, unknown>,
+              )) {
+                if (!newItems[domain as ConfigDomain][categoryId][itemId]) continue
+
+                newItems[domain as ConfigDomain] = {
+                  ...newItems[domain as ConfigDomain],
+                  [categoryId]: {
+                    ...newItems[domain as ConfigDomain][categoryId],
+                    [itemId]: {
+                      ...newItems[domain as ConfigDomain][categoryId][itemId],
+                      value,
+                    },
+                  },
+                }
               }
             }
           }
