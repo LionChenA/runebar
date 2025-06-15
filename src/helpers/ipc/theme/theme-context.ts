@@ -1,4 +1,4 @@
-import type { ThemeChangeEvent } from "@/helpers/theme"
+import type { ThemeState } from "@/types/theme-types"
 import { contextBridge, ipcRenderer } from "electron"
 import {
   THEME_MODE_CHANGED_CHANNEL,
@@ -16,11 +16,11 @@ export function exposeThemeContext() {
     dark: () => ipcRenderer.invoke(THEME_MODE_DARK_CHANNEL),
     light: () => ipcRenderer.invoke(THEME_MODE_LIGHT_CHANNEL),
     system: () => ipcRenderer.invoke(THEME_MODE_SYSTEM_CHANNEL),
-    onThemeChange: (callback: (event: ThemeChangeEvent) => void) => {
+    onThemeChange: (callback: (event: ThemeState) => void) => {
       ipcRenderer.removeAllListeners(THEME_MODE_CHANGED_CHANNEL)
       ipcRenderer.on(
         THEME_MODE_CHANGED_CHANNEL,
-        (_event: Electron.IpcRendererEvent, themeEvent: ThemeChangeEvent) => {
+        (_event: Electron.IpcRendererEvent, themeEvent: ThemeState) => {
           callback(themeEvent)
         },
       )
